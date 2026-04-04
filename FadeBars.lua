@@ -1,9 +1,7 @@
 local _, FadeBlizzardBars = ...
-local _G = _G
-
 local MainActionBar = FadeBlizzardBars.ActionBarNames.MainActionBar
 
-FadeBlizzardBars.HandleFadeBar = function(barName, buttonData, isPrefix)
+FadeBlizzardBars.HandleFadeBar = function(_G, barName, buttonData, isPrefix)
     local bar = _G[barName]
 
     if not bar

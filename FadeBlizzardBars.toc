@@ -16,5 +16,10 @@
 
 ## Core
 FadeBlizzardBars.lua
+
+# Constants
 BarConstants.lua
+
+## Handlers
 FadeBars.lua
+ClickTroughBars.lua
