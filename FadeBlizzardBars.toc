@@ -15,5 +15,6 @@
 ## Version: 0.1
 
 ## Core
-BarConstants.lua
 FadeBlizzardBars.lua
+BarConstants.lua
+FadeBars.lua
