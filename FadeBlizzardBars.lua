@@ -1,6 +1,7 @@
 --[[
+	MIT License
 	Copyright (c) 2026, Vitaliy "Ramony" Chernishev < chernush.vitaly at gmail dot com >
-	All rights reserved.
+	See LICENSE for details.
 ]]
 
 local _, FadeBlizzardBars = ...
