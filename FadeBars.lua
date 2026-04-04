@@ -1,64 +1,88 @@
 local _, FadeBlizzardBars = ...
 local MainActionBar = FadeBlizzardBars.ActionBarNames.MainActionBar
 
-FadeBlizzardBars.HandleFadeBar = function(_G, barName, buttonData, isPrefix)
-    local bar = _G[barName]
-
-    if not bar
-    then return
-    end
-
-    bar:SetAlpha(0)
-    local fadeTimer = nil
-
-    local function FadeIn()
-        if fadeTimer then
-            fadeTimer:Cancel()
-            fadeTimer = nil
-        end
-
-        UIFrameFadeIn(bar, FadeBlizzardBars.FadeConstants.FADE_IN_TIME, bar:GetAlpha(), 1)
-    end
-
-    local function FadeOut()
-        fadeTimer = C_Timer.NewTimer(FadeBlizzardBars.FadeConstants.FADE_OUT_DELAY,
-        function()
-            UIFrameFadeOut(bar, FadeBlizzardBars.FadeConstants.FADE_OUT_TIME, bar:GetAlpha(), 0)
-            fadeTimer = nil
-        end)
-    end
-
-    local function UpdateVisibility()
-        if barName == MainActionBar and GetActionBarPage() == 2 then
-            FadeIn()
-        else
-            FadeOut()
-        end
-    end
-
-    local pageWatcher = CreateFrame("Frame")
-    pageWatcher:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
-    pageWatcher:SetScript("OnEvent", UpdateVisibility)
-
-    bar:EnableMouse(true)
-    bar:HookScript("OnEnter", FadeIn)
-    bar:HookScript("OnLeave", FadeOut)
-
-    if isPrefix then
-        for i = 1, 12 do
-            local btn = _G[buttonData .. i]
-            if btn then
-                btn:HookScript("OnEnter", FadeIn)
-                btn:HookScript("OnLeave", FadeOut)
-            end
-        end
+local function UpdateVisibility(page, fadeInCallback, fadeOutCallback)
+    if page == 2 then
+        fadeInCallback()
     else
-        for _, btnName in ipairs(buttonData) do
-            local btn = _G[btnName]
-            if btn then
-                btn:HookScript("OnEnter", FadeIn)
-                btn:HookScript("OnLeave", FadeOut)
+        fadeOutCallback()
+    end
+end
+
+local function IsFadeEnabled(barKey)
+    local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
+    if not userProfile then
+        return false
+    end
+
+    local option = userProfile.barOptions[barKey]
+    if not userProfile.enabled or not option then
+        return false
+    end
+
+    return option.fade
+end
+
+FadeBlizzardBars.HandleFadeBars = function(_G)
+    local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
+    if not userProfile then
+        return
+    end
+
+    for key, option in pairs(userProfile.barOptions) do
+        local barData = FadeBlizzardBars.GetBarByKey(key)
+        local bar = _G[barData.frame]
+
+        if bar and option.fade then
+            bar:SetAlpha(0)
+            local fadeTimer = nil
+
+            local function FadeIn()
+                if not IsFadeEnabled(key) then
+                    return
+                end
+
+                if fadeTimer then
+                    fadeTimer:Cancel()
+                    fadeTimer = nil
+                end
+
+                UIFrameFadeIn(bar, FadeBlizzardBars.FadeConstants.FADE_IN_TIME, bar:GetAlpha(), 1)
             end
+
+            local function FadeOut()
+                if not IsFadeEnabled(key) then
+                    return
+                end
+
+                fadeTimer = C_Timer.NewTimer(FadeBlizzardBars.FadeConstants.FADE_OUT_DELAY,
+                function()
+                    UIFrameFadeOut(bar, FadeBlizzardBars.FadeConstants.FADE_OUT_TIME, bar:GetAlpha(), 0)
+                    fadeTimer = nil
+                end)
+            end
+
+            if barData.frame == MainActionBar then
+                local pageWatcher = CreateFrame("Frame")
+                pageWatcher:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
+                pageWatcher:SetScript("OnEvent", function(_, _)
+                    UpdateVisibility(GetActionBarPage(), FadeIn, FadeOut)
+                end)
+                FadeBlizzardBars.PageWatchers[barData.key] = pageWatcher
+            end
+
+            bar:HookScript("OnEnter", FadeIn)
+            bar:HookScript("OnLeave", FadeOut)
+
+            for _, buttonKey in ipairs(barData.buttons) do
+                local btn = _G[buttonKey]
+                if btn then
+                    btn:HookScript("OnEnter", FadeIn)
+                    btn:HookScript("OnLeave", FadeOut)
+                end
+            end
+        elseif bar then
+            bar:SetAlpha(1)
         end
     end
 end

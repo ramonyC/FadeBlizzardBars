@@ -14,10 +14,20 @@
 
 ## Version: 0.1
 
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+
+## TODO: configure libs fetch
+
 ## Core
 FadeBlizzardBars.lua
+FadeBlizzardBarsCore.lua
+EventHandlers.lua
+Utilities.lua
 
-# Constants
+## Constants
 BarConstants.lua
 
 ## Handlers

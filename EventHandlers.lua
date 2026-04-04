@@ -1,0 +1,3 @@
+local _, FadeBlizzardBars = ...
+
+FadeBlizzardBars.PageWatchers = {}

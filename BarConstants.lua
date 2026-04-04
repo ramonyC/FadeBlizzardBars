@@ -32,27 +32,47 @@ FadeBlizzardBars.ActionBarNames = {
 }
 
 FadeBlizzardBars.ActionBarCollection = {
-    { frame = "MainActionBar",   buttons = GetActionBarButtonNameCollection("ActionButton") }, -- Main Action Bar
-    { frame = "MultiBarBottomLeft", buttons = GetActionBarButtonNameCollection("MultiBarBottomLeftButton") }, -- Bar 2
-    { frame = "MultiBarBottomRight", buttons = GetActionBarButtonNameCollection("MultiBarBottomRightButton") }, -- Bar 3
-    { frame = "MultiBarRight", buttons = GetActionBarButtonNameCollection("MultiBarRightButton") }, -- Bar 4
-    { frame = "MultiBarLeft", buttons = GetActionBarButtonNameCollection("MultiBarLeftButton") }, -- Bar 5
-    { frame = "MultiBar5", buttons = GetActionBarButtonNameCollection("MultiBar5Button") }, -- Bar 6
-    { frame = "MultiBar6", buttons = GetActionBarButtonNameCollection("MultiBar6Button") }, -- Bar 7
-    { frame = "MultiBar7", buttons = GetActionBarButtonNameCollection("MultiBar7Button") }, -- Bar 8
+    { key = "mainActionBar", frame = "MainActionBar",   buttons = GetActionBarButtonNameCollection("ActionButton") }, -- Main Action Bar
+    { key = "multiBarBottomLeft", frame = "MultiBarBottomLeft", buttons = GetActionBarButtonNameCollection("MultiBarBottomLeftButton") }, -- Bar 2
+    { key = "multiBarBottomRight", frame = "MultiBarBottomRight", buttons = GetActionBarButtonNameCollection("MultiBarBottomRightButton") }, -- Bar 3
+    { key = "multiBarRight", frame = "MultiBarRight", buttons = GetActionBarButtonNameCollection("MultiBarRightButton") }, -- Bar 4
+    { key = "multiBarLeft", frame = "MultiBarLeft", buttons = GetActionBarButtonNameCollection("MultiBarLeftButton") }, -- Bar 5
+    { key = "multiBar5", frame = "MultiBar5", buttons = GetActionBarButtonNameCollection("MultiBar5Button") }, -- Bar 6
+    { key = "multiBar6", frame = "MultiBar6", buttons = GetActionBarButtonNameCollection("MultiBar6Button") }, -- Bar 7
+    { key = "multiBar7", frame = "MultiBar7", buttons = GetActionBarButtonNameCollection("MultiBar7Button") }, -- Bar 8
 
-    { frame = "PetActionBar", buttons = GetActionBarButtonNameCollection("PetActionButton") }, -- Pet Action Bar
-    { frame = "StanceBar", buttons = GetActionBarButtonNameCollection("StanceButton") }, -- Stance Bar
+    { key = "petActionBar", frame = "PetActionBar", buttons = GetActionBarButtonNameCollection("PetActionButton") }, -- Pet Action Bar
+    { key = "stanceBar", frame = "StanceBar", buttons = GetActionBarButtonNameCollection("StanceButton") }, -- Stance Bar
 
-    { frame = "BagsBar", buttons = {
+    { key = "bagsBar", frame = "BagsBar", buttons = {
         "CharacterBag0Slot", "CharacterBag1Slot", "CharacterBag2Slot", "CharacterBag3Slot",
         "MainMenuBarBackpackButton", "CharacterReagentBag0Slot", "CharacterReagentBag1Slot", "CharacterReagentBag2Slot", "CharacterReagentBag3Slot"
     } }, -- Bags Bar
-    { frame = "MicroMenuContainer", buttons = {
+    { key = "microMenuContainer", frame = "MicroMenuContainer", buttons = {
         "CharacterMicroButton", "SpellbookMicroButton", "TalentMicroButton", "AchievementMicroButton",
         "QuestLogMicroButton", "GuildMicroButton", "ProfessionMicroButton", "PlayerSpellsMicroButton", "HousingMicroButton", "LFDMicroButton",
         "CollectionsMicroButton", "EJMicroButton", "StoreMicroButton", "MainMenuMicroButton"
     } }, -- Micro Menu Bar
+}
+
+FadeBlizzardBars.DbDefaults = {
+	profile = {
+		enabled = true,
+        barOptions = {
+            mainActionBar = { fade = false, clickThrough = false },
+            multiBarBottomLeft = { fade = false, clickThrough = false },
+            multiBarBottomRight = { fade = false, clickThrough = false },
+            multiBarRight = { fade = false, clickThrough = false },
+            multiBarLeft = { fade = false, clickThrough = false },
+            multiBar5 = { fade = false, clickThrough = false },
+            multiBar6 = { fade = false, clickThrough = false },
+            multiBar7 = { fade = false, clickThrough = false },
+            petActionBar = { fade = false, clickThrough = false },
+            stanceBar = { fade = false, clickThrough = false },
+            bagsBar = { fade = false, clickThrough = false },
+            microMenuContainer = { fade = false, clickThrough = false },
+        },
+	}
 }
 
 -- Obsolete, will be removed in favor of ActionBarNameCollection
