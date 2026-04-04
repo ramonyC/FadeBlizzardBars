@@ -1,2 +1,2 @@
 # FadeBlizzardBars
-Simple add-on to fade or apply click-through on in-game Blizzard Action Bars
+A simple and lightweight add-on to apply fade and click-through effects to the in-game Blizzard Action Bars
