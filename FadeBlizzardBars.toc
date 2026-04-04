@@ -1,0 +1,19 @@
+## Interface: 120001
+
+## Title: FadeBlizzardBars
+## Notes: Simple addon to fade standart Blizzard action bars
+## IconTexture: Interface\Icons\INV_Misc_Gem_01
+
+## Author: Ramony
+## X-Email: chernush.vitaly at gmail dot CollectionsMicroButton
+
+## X-Category: Action bars
+## X-License: All right reserved.
+
+## SavedVariables: FadeBlizzardBarsDB
+
+## Version: 0.1
+
+## Core
+BarConstants.lua
+FadeBlizzardBars.lua
