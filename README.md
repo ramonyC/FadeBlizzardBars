@@ -1,2 +1,2 @@
 # FadeBlizzardBars
-Simple addon to hide standart Blizzard action bars and add click-through
+Simple add-on to fade or apply click-through on in-game Blizzard Action Bars
