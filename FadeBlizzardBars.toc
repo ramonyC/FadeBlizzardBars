@@ -8,7 +8,7 @@
 ## X-Email: chernush.vitaly at gmail dot CollectionsMicroButton
 
 ## X-Category: Action bars
-## X-License: All right reserved.
+## X-License: MIT
 
 ## SavedVariables: FadeBlizzardBarsDB
 
