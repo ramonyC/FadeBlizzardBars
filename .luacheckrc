@@ -9,5 +9,12 @@ exclude_files = {
 ignore = {}
 
 globals = {
-	"_G",
+    "_G",
+    "LibStub",
+    "CreateFrame",
+    "UIFrameFadeIn",
+    "UIFrameFadeOut",
+    "C_Timer",
+    "ReloadUI",
+    "GetActionBarPage",
 }

@@ -19,4 +19,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Luacheck
+        run: |
+          sudo apt-get install luarocks -y
+          luarocks install --local luacheck
+          ~/.luarocks/bin/luacheck . --no-color -q
+
       - uses: BigWigsMods/packager@v2
