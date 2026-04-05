@@ -1,4 +1,5 @@
 local _, FadeBlizzardBars = ...
+local _G = _G
 local MainActionBar = FadeBlizzardBars.ActionBarNames.MainActionBar
 
 local function UpdateVisibility(page, fadeInCallback, fadeOutCallback)
@@ -23,7 +24,7 @@ local function IsFadeEnabled(barKey)
     return option.fade
 end
 
-FadeBlizzardBars.HandleFadeBars = function(globalContext)
+FadeBlizzardBars.HandleFadeBars = function()
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
@@ -31,7 +32,7 @@ FadeBlizzardBars.HandleFadeBars = function(globalContext)
 
     for key, option in pairs(userProfile.barOptions) do
         local barData = FadeBlizzardBars.GetBarByKey(key)
-        local bar = globalContext[barData.frame]
+        local bar = _G[barData.frame]
 
         if bar and option.fade then
             bar:SetAlpha(0)
@@ -75,7 +76,7 @@ FadeBlizzardBars.HandleFadeBars = function(globalContext)
             bar:HookScript("OnLeave", FadeOut)
 
             for _, buttonKey in ipairs(barData.buttons) do
-                local btn = globalContext[buttonKey]
+                local btn = _G[buttonKey]
                 if btn then
                     btn:HookScript("OnEnter", FadeIn)
                     btn:HookScript("OnLeave", FadeOut)

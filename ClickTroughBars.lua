@@ -1,6 +1,7 @@
 local _, FadeBlizzardBars = ...
+local _G = _G
 
-FadeBlizzardBars.HandleClickThroughBars = function(globalContext)
+FadeBlizzardBars.HandleClickThroughBars = function()
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
@@ -8,10 +9,10 @@ FadeBlizzardBars.HandleClickThroughBars = function(globalContext)
 
     for key, option in pairs(userProfile.barOptions) do
         local barData = FadeBlizzardBars.GetBarByKey(key)
-        local bar = globalContext[barData.frame]
+        local bar = _G[barData.frame]
         if bar then
             for _, buttonKey in ipairs(barData.buttons) do
-                local btn = globalContext[buttonKey]
+                local btn = _G[buttonKey]
                 if btn then
                     btn:EnableMouse(option.clickThrough == false)
                 end
