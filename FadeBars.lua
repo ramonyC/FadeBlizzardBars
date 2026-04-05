@@ -23,7 +23,7 @@ local function IsFadeEnabled(barKey)
     return option.fade
 end
 
-FadeBlizzardBars.HandleFadeBars = function(_G)
+FadeBlizzardBars.HandleFadeBars = function(globalContext)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
@@ -31,7 +31,7 @@ FadeBlizzardBars.HandleFadeBars = function(_G)
 
     for key, option in pairs(userProfile.barOptions) do
         local barData = FadeBlizzardBars.GetBarByKey(key)
-        local bar = _G[barData.frame]
+        local bar = globalContext[barData.frame]
 
         if bar and option.fade then
             bar:SetAlpha(0)
@@ -75,7 +75,7 @@ FadeBlizzardBars.HandleFadeBars = function(_G)
             bar:HookScript("OnLeave", FadeOut)
 
             for _, buttonKey in ipairs(barData.buttons) do
-                local btn = _G[buttonKey]
+                local btn = globalContext[buttonKey]
                 if btn then
                     btn:HookScript("OnEnter", FadeIn)
                     btn:HookScript("OnLeave", FadeOut)
