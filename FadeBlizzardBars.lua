@@ -33,6 +33,7 @@ end
 
 local CLICK_THROUGH_LABEL = "Click Through"
 local FADE_LABEL = "Fade"
+local OPACITY_LABEL = "Opacity"
 
 local function ApplyClickThroughOption(barKey, barOption, value)
     FadeBlizzardBars.SetBarOption(barKey, barOption, value)
@@ -67,6 +68,21 @@ return {
             end,
             set = function(_, value)
                 ApplyClickThroughOption(barKey, "clickThrough", value)
+            end,
+        },
+        alpha = {
+            name = OPACITY_LABEL,
+            type = "range",
+            order = 2,
+            min = 0,
+            max = 1,
+            step = 0.01,
+            isPercent = true,
+            get = function()
+                return FadeBlizzardBars.GetBarOption(barKey, "alpha") or 0
+            end,
+            set = function(_, value)
+                ApplyFadeOption(barKey, "alpha", value)
             end,
         },
     }
