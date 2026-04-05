@@ -24,6 +24,37 @@ local function IsFadeEnabled(barKey)
     return option.fade
 end
 
+local function RegisterFadeHook(bar, barKey, buttons, fadeInCallback, fadeOutCallback)
+    if FadeBlizzardBars.IsFadeHookRegistered(barKey) then
+        return
+    end
+
+    FadeBlizzardBars.RegisterFadeHook(barKey)
+    bar:HookScript("OnEnter", fadeInCallback)
+    bar:HookScript("OnLeave", fadeOutCallback)
+
+    for _, buttonKey in ipairs(buttons) do
+        local btn = _G[buttonKey]
+        if btn then
+            btn:HookScript("OnEnter", fadeInCallback)
+            btn:HookScript("OnLeave", fadeOutCallback)
+        end
+    end
+end
+
+local function RegisterPageWatcher(barKey, fadeInCallback, fadeOutCallback)
+    if FadeBlizzardBars.PageWatchers[barKey] ~= nil then
+        return
+    end
+
+    local pageWatcher = CreateFrame("Frame")
+    pageWatcher:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
+    pageWatcher:SetScript("OnEvent", function(_, _)
+        UpdateVisibility(GetActionBarPage(), fadeInCallback, fadeOutCallback)
+    end)
+    FadeBlizzardBars.PageWatchers[barKey] = pageWatcher
+end
+
 FadeBlizzardBars.HandleFadeBars = function()
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
@@ -63,24 +94,9 @@ FadeBlizzardBars.HandleFadeBars = function()
                 end)
             end
 
+            RegisterFadeHook(bar, key, barData.buttons, FadeIn, FadeOut)
             if barData.frame == MainActionBar then
-                local pageWatcher = CreateFrame("Frame")
-                pageWatcher:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
-                pageWatcher:SetScript("OnEvent", function(_, _)
-                    UpdateVisibility(GetActionBarPage(), FadeIn, FadeOut)
-                end)
-                FadeBlizzardBars.PageWatchers[barData.key] = pageWatcher
-            end
-
-            bar:HookScript("OnEnter", FadeIn)
-            bar:HookScript("OnLeave", FadeOut)
-
-            for _, buttonKey in ipairs(barData.buttons) do
-                local btn = _G[buttonKey]
-                if btn then
-                    btn:HookScript("OnEnter", FadeIn)
-                    btn:HookScript("OnLeave", FadeOut)
-                end
+                RegisterPageWatcher(key, FadeIn, FadeOut)
             end
         elseif bar then
             bar:SetAlpha(1)
