@@ -3,7 +3,7 @@ local _G = _G
 local MainActionBar = FadeBlizzardBars.ActionBarNames.MainActionBar
 
 local function UpdateVisibility(page, fadeInCallback, fadeOutCallback)
-    if page == 2 then
+    if page ~= 1 then
         fadeInCallback()
     else
         fadeOutCallback()

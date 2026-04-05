@@ -33,6 +33,7 @@ libs\AceConfig-3.0\AceConfig-3.0.xml
 ## Core
 FadeBlizzardBars.lua
 FadeBlizzardBarsCore.lua
+FadeBlizzardBarsOptions.lua
 EventHandlers.lua
 Utilities.lua
 
