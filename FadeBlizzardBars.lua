@@ -14,7 +14,8 @@ function FadeBlizzardBars:OnInitialize()
         FadeBlizzardBars:EnableAddon()
     end
 
-    print("|cff00ff00FadeBlizzardBars:|r Available commands: |cff00ffff/fbb on|r to enable, |cff00ffff/fbb off|r to disable, |cff00ffff/fbb options|r to open options")
+    print("|cff00ff00FadeBlizzardBars:|r Available commands: |cff00ffff/fbb on|r to enable," ..
+    " |cff00ffff/fbb off|r to disable, |cff00ffff/fbb|r to configure")
 end
 
 SLASH_FBB1 = "/fbb"
@@ -25,10 +26,8 @@ SlashCmdList["FBB"] = function(msg)
     elseif msg == "on" then
         FadeBlizzardBars:EnableAddon()
         print("|cff00ff00FadeBlizzardBars:|r Enabled")
-    elseif msg == "options" then
-        LibStub("AceConfigDialog-3.0"):Open("FadeBlizzardBars")
     else
-        print("|cff00ff00FadeBlizzardBars:|r /fbb on | /fbb off | /fbb options")
+        LibStub("AceConfigDialog-3.0"):Open("FadeBlizzardBars")
     end
 end
 
