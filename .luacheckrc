@@ -6,10 +6,9 @@ exclude_files = {
 	".luacheckrc"
 }
 
-globals = {
+ignore = {
     "_G",
     "SLASH_FBB1",
-    "SLASH_FBB2",
     "SlashCmdList",
     "FadeBlizzardBarsDB",
 }
