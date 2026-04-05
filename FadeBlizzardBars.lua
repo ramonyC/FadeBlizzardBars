@@ -34,6 +34,10 @@ end
 local CLICK_THROUGH_LABEL = "Click Through"
 local FADE_LABEL = "Fade"
 local OPACITY_LABEL = "Opacity"
+local FADE_SETTINGS_LABEL = "Fade Settings"
+local FADE_IN_LABEL = "Fade In Time"
+local FADE_OUT_LABEL = "Fade Out Time"
+local FADE_OUT_DELAY_LABEL = "Fade Out Delay"
 
 local function ApplyClickThroughOption(barKey, barOption, value)
     FadeBlizzardBars.SetBarOption(barKey, barOption, value)
@@ -47,6 +51,14 @@ local function ApplyFadeOption(barKey, barOption, value)
     if FadeBlizzardBars.IsEnabled() then
         FadeBlizzardBars:ApplyFade()
     end
+end
+
+local function GetSpacer(order)
+    return {
+        name = " ",
+        type = "description",
+        order = order,
+    }
 end
 
 -- Options per bar
@@ -88,6 +100,66 @@ return {
             set = function(_, value)
                 ApplyFadeOption(barKey, "alpha", value)
             end,
+        },
+        spacer = GetSpacer(3),
+        fadeSettings = {
+            name = FADE_SETTINGS_LABEL,
+            type = "group",
+            inline = true,
+            order = 4,
+            args = {
+                fadeInTime = {
+                    name = FADE_IN_LABEL,
+                    type = "range",
+                    order = 0,
+                    min = 0,
+                    max = 1,
+                    step = 0.1,
+                    get = function()
+                        return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeInTime
+                    end,
+                    set = function(_, value)
+                        local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
+                        fadeSettings.fadeInTime = value
+
+                        ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                    end,
+                },
+                fadeOutTime = {
+                    name = FADE_OUT_LABEL,
+                    type = "range",
+                    order = 1,
+                    min = 0,
+                    max = 1,
+                    step = 0.1,
+                    get = function()
+                        return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeOutTime
+                    end,
+                    set = function(_, value)
+                        local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
+                        fadeSettings.fadeOutTime = value
+
+                        ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                    end,
+                },
+                fadeOutDelay = {
+                    name = FADE_OUT_DELAY_LABEL,
+                    type = "range",
+                    order = 2,
+                    min = 0,
+                    max = 5,
+                    step = 0.1,
+                    get = function()
+                        return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeOutDelay
+                    end,
+                    set = function(_, value)
+                        local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
+                        fadeSettings.fadeOutDelay = value
+
+                        ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                    end,
+                },
+            },
         },
     }
 end
@@ -131,7 +203,7 @@ local options = {
                     end,
                 },
                 resetButton = {
-                    name = "Reset to defaults",
+                    name = "Reset settings",
                     type = "execute",
                     order = 1,
                     confirm = true,
@@ -149,13 +221,13 @@ local options = {
             order = 2,
         },
         mainBarOption = GetOptionGroupConfig("Main Action Bar", "mainActionBar", 3),
-        bottomLeftBarOption = GetOptionGroupConfig("Bottom Left Action Bar", "multiBarBottomLeft", 4),
-        bottomRightBarOption = GetOptionGroupConfig("Bottom Right Action Bar", "multiBarBottomRight", 5),
-        rightBarOption = GetOptionGroupConfig("Right Action Bar", "multiBarRight", 6),
-        leftBarOption = GetOptionGroupConfig("Left Action Bar", "multiBarLeft", 7),
-        multiBar5Option = GetOptionGroupConfig("Multi Bar 5", "multiBar5", 8),
-        multiBar6Option = GetOptionGroupConfig("Multi Bar 6", "multiBar6", 9),
-        multiBar7Option = GetOptionGroupConfig("Multi Bar 7", "multiBar7", 10),
+        bottomLeftBarOption = GetOptionGroupConfig("Action Bar 2", "multiBarBottomLeft", 4),
+        bottomRightBarOption = GetOptionGroupConfig("Action Bar 3", "multiBarBottomRight", 5),
+        rightBarOption = GetOptionGroupConfig("Action Bar 4", "multiBarRight", 6),
+        leftBarOption = GetOptionGroupConfig("Action Bar 5", "multiBarLeft", 7),
+        multiBar5Option = GetOptionGroupConfig("Action Bar 6", "multiBar5", 8),
+        multiBar6Option = GetOptionGroupConfig("Action Bar 7", "multiBar6", 9),
+        multiBar7Option = GetOptionGroupConfig("Action Bar 8", "multiBar7", 10),
         petBarOption = GetOptionGroupConfig("Pet Action Bar", "petActionBar", 11),
         stanceBarOption = GetOptionGroupConfig("Stance Bar", "stanceBar", 12),
         bagsBarOption = GetOptionGroupConfig("Bags Bar", "bagsBar", 13),

@@ -10,15 +10,17 @@
 ## X-Category: Action bars
 ## X-License: MIT
 
+## Version: @project-version@
+
 ## SavedVariables: FadeBlizzardBarsDB
 ## OptionalDeps: Ace3
-
-## Version: @project-version@
 
 #@no-lib-strip@
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+#@end-no-lib-strip@
 
+#@no-lib-strip@
 libs\AceGUI-3.0\AceGUI-3.0.xml
 libs\AceAddon-3.0\AceAddon-3.0.xml
 libs\AceDB-3.0\AceDB-3.0.xml

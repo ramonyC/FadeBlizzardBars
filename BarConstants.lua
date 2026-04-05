@@ -1,9 +1,9 @@
 local _, FadeBlizzardBars = ...
 
-FadeBlizzardBars.FadeConstants = {
-    FADE_IN_TIME = 0.2,
-    FADE_OUT_TIME = 0.2,
-    FADE_OUT_DELAY = 0.2,
+local DefaultFadeConstants = {
+    fadeItTime = 0,
+    fadeOutTime = 0,
+    fadeOutDelay = 0.5,
 }
 
 local MaxActionBarCount = 12;
@@ -59,47 +59,66 @@ FadeBlizzardBars.DbDefaults = {
 	profile = {
 		enabled = true,
         barOptions = {
-            mainActionBar = { fade = false, clickThrough = false, alpha = 0 },
-            multiBarBottomLeft = { fade = false, clickThrough = false, alpha = 0 },
-            multiBarBottomRight = { fade = false, clickThrough = false, alpha = 0 },
-            multiBarRight = { fade = false, clickThrough = false, alpha = 0 },
-            multiBarLeft = { fade = false, clickThrough = false, alpha = 0 },
-            multiBar5 = { fade = false, clickThrough = false, alpha = 0 },
-            multiBar6 = { fade = false, clickThrough = false, alpha = 0 },
-            multiBar7 = { fade = false, clickThrough = false, alpha = 0 },
-            petActionBar = { fade = false, clickThrough = false, alpha = 0 },
-            stanceBar = { fade = false, clickThrough = false, alpha = 0 },
-            bagsBar = { fade = false, clickThrough = false, alpha = 0 },
-            microMenuContainer = { fade = false, clickThrough = false, alpha = 0 },
+            mainActionBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            multiBarBottomLeft = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            multiBarBottomRight = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            multiBarRight = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            multiBarLeft = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            multiBar5 = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            multiBar6 = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            multiBar7 = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            petActionBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            stanceBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            bagsBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
+            microMenuContainer = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+                fadeInTime = DefaultFadeConstants.fadeItTime,
+                fadeOutTime = DefaultFadeConstants.fadeOutTime,
+                fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            } },
         },
 	}
-}
-
--- Obsolete, will be removed in favor of ActionBarNameCollection
-FadeBlizzardBars.ClickThruBars = {
-    { frame = "MultiBar6", buttons = "MultiBar6Button" }, -- Bar 7
-    { frame = "MultiBar7", buttons = "MultiBar7Button" }, -- Bar 8
-}
-
-FadeBlizzardBars.HoverBars = {
-    { frame = "MainActionBar",   buttons = "ActionButton" }, -- Main Action Bar
-    { frame = "MultiBarBottomLeft", buttons = "MultiBarBottomLeftButton" }, -- Bar 2
-    { frame = "MultiBarBottomRight", buttons = "MultiBarBottomRightButton" }, -- Bar 3
-    { frame = "MultiBarRight", buttons = "MultiBarRightButton" }, -- Bar 4
-    { frame = "MultiBarLeft", buttons = "MultiBarLeftButton" }, -- Bar 5
-    { frame = "MultiBar5", buttons = "MultiBar5Button" }, -- Bar 6
-    { frame = "PetActionBar", buttons = "PetActionButton" }, -- Pet Action Bar
-    { frame = "StanceBar", buttons = "StanceButton" }, -- Stance Bar
-}
-
-FadeBlizzardBars.UniqueHoverBars = {
-    { frame = "BagsBar", buttons = {
-        "CharacterBag0Slot", "CharacterBag1Slot", "CharacterBag2Slot", "CharacterBag3Slot",
-        "MainMenuBarBackpackButton", "CharacterReagentBag0Slot", "CharacterReagentBag1Slot", "CharacterReagentBag2Slot", "CharacterReagentBag3Slot"
-    } }, -- Bags Bar
-    { frame = "MicroMenuContainer", buttons = {
-        "CharacterMicroButton", "SpellbookMicroButton", "TalentMicroButton", "AchievementMicroButton",
-        "QuestLogMicroButton", "GuildMicroButton", "ProfessionMicroButton", "PlayerSpellsMicroButton", "HousingMicroButton", "LFDMicroButton",
-        "CollectionsMicroButton", "EJMicroButton", "StoreMicroButton", "MainMenuMicroButton"
-    } }, -- Micro Menu Bar
 }

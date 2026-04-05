@@ -48,7 +48,7 @@ FadeBlizzardBars.HandleFadeBars = function()
                     fadeTimer = nil
                 end
 
-                UIFrameFadeIn(bar, FadeBlizzardBars.FadeConstants.FADE_IN_TIME, bar:GetAlpha(), 1)
+                UIFrameFadeIn(bar, option.fadeSettings.fadeInTime or 0, bar:GetAlpha(), 1)
             end
 
             local function FadeOut()
@@ -56,9 +56,9 @@ FadeBlizzardBars.HandleFadeBars = function()
                     return
                 end
 
-                fadeTimer = C_Timer.NewTimer(FadeBlizzardBars.FadeConstants.FADE_OUT_DELAY,
+                fadeTimer = C_Timer.NewTimer(option.fadeSettings.fadeOutDelay or 0,
                 function()
-                    UIFrameFadeOut(bar, FadeBlizzardBars.FadeConstants.FADE_OUT_TIME, bar:GetAlpha(), option.alpha or 0)
+                    UIFrameFadeOut(bar, option.fadeSettings.fadeOutTime or 0, bar:GetAlpha(), option.alpha or 0)
                     fadeTimer = nil
                 end)
             end
