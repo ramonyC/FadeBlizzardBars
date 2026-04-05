@@ -9,7 +9,7 @@ FadeBlizzardBars = LibStub("AceAddon-3.0"):NewAddon(FadeBlizzardBars, "FadeBlizz
 _G.FadeBlizzardBars = FadeBlizzardBars
 
 function FadeBlizzardBars:OnInitialize()
-    self.db = LibStub("AceDB-3.0"):New("FadeBlizzardBarsDB", FadeBlizzardBars.DbDefaults, true)
+    self.db = LibStub("AceDB-3.0"):New("FadeBlizzardBarsDB", FadeBlizzardBars.DbDefaults)
     if self.db.profile.enabled then
         FadeBlizzardBars:EnableAddon()
     end
@@ -37,12 +37,16 @@ local OPACITY_LABEL = "Opacity"
 
 local function ApplyClickThroughOption(barKey, barOption, value)
     FadeBlizzardBars.SetBarOption(barKey, barOption, value)
-    FadeBlizzardBars:ApplyClickThrough()
+    if FadeBlizzardBars.IsEnabled() then
+        FadeBlizzardBars:ApplyClickThrough()
+    end
 end
 
 local function ApplyFadeOption(barKey, barOption, value)
     FadeBlizzardBars.SetBarOption(barKey, barOption, value)
-    FadeBlizzardBars:ApplyFade()
+    if FadeBlizzardBars.IsEnabled() then
+        FadeBlizzardBars:ApplyFade()
+    end
 end
 
 -- Options per bar
