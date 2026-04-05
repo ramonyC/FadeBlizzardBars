@@ -1,12 +1,12 @@
 local _, FadeBlizzardBars = ...
 local _G = _G
 
-FadeBlizzardBars.ApplyFade = function()
-    FadeBlizzardBars.HandleFadeBars()
+FadeBlizzardBars.ApplyFade = function(_, optionKey)
+    FadeBlizzardBars.HandleFadeBars(optionKey)
 end
 
-FadeBlizzardBars.ApplyClickThrough = function()
-    FadeBlizzardBars.HandleClickThroughBars()
+FadeBlizzardBars.ApplyClickThrough = function(_, optionKey)
+    FadeBlizzardBars.HandleClickThroughBars(optionKey)
 end
 
 local function UnregisterPageWatcher(barKey)

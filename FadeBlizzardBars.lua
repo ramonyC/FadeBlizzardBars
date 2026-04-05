@@ -42,14 +42,14 @@ local FADE_OUT_DELAY_LABEL = "Fade Out Delay"
 local function ApplyClickThroughOption(barKey, barOption, value)
     FadeBlizzardBars.SetBarOption(barKey, barOption, value)
     if FadeBlizzardBars.IsEnabled() then
-        FadeBlizzardBars:ApplyClickThrough()
+        FadeBlizzardBars:ApplyClickThrough(barKey)
     end
 end
 
 local function ApplyFadeOption(barKey, barOption, value)
     FadeBlizzardBars.SetBarOption(barKey, barOption, value)
     if FadeBlizzardBars.IsEnabled() then
-        FadeBlizzardBars:ApplyFade()
+        FadeBlizzardBars:ApplyFade(barKey)
     end
 end
 

@@ -55,13 +55,20 @@ local function RegisterPageWatcher(barKey, fadeInCallback, fadeOutCallback)
     FadeBlizzardBars.PageWatchers[barKey] = pageWatcher
 end
 
-FadeBlizzardBars.HandleFadeBars = function()
+FadeBlizzardBars.HandleFadeBars = function(optionKey)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
     end
 
-    for key, option in pairs(userProfile.barOptions) do
+    local options = {}
+    if optionKey == nil then
+        options = userProfile.barOptions
+    else
+        options[optionKey] = userProfile.barOptions[optionKey]
+    end
+
+    for key, option in pairs(options) do
         local barData = FadeBlizzardBars.GetBarByKey(key)
         local bar = _G[barData.frame]
 

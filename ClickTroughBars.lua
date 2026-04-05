@@ -1,13 +1,20 @@
 local _, FadeBlizzardBars = ...
 local _G = _G
 
-FadeBlizzardBars.HandleClickThroughBars = function()
+FadeBlizzardBars.HandleClickThroughBars = function(optionKey)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
     end
 
-    for key, option in pairs(userProfile.barOptions) do
+    local options = {}
+    if optionKey == nil then
+        options = userProfile.barOptions
+    else
+        options[optionKey] = userProfile.barOptions[optionKey]
+    end
+
+    for key, option in pairs(options) do
         local barData = FadeBlizzardBars.GetBarByKey(key)
         local bar = _G[barData.frame]
         if bar then
