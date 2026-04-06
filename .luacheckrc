@@ -22,4 +22,5 @@ globals = {
     "C_Timer",
     "ReloadUI",
     "GetActionBarPage",
+    "IsMounted",
 }
