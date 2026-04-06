@@ -4,7 +4,7 @@ FadeBlizzardBars.PageWatchers = {}
 
 local RegisteredFadeHooks = {}
 
-local RegisteredShowInCombatHooks = {}
+local RegisteredHooks = {}
 
 FadeBlizzardBars.RegisterFadeHook = function(key)
     RegisteredFadeHooks[key] = true
@@ -14,10 +14,10 @@ FadeBlizzardBars.IsFadeHookRegistered = function(key)
     return RegisteredFadeHooks[key] == true
 end
 
-FadeBlizzardBars.RegisterShowInCombatHook = function(key)
-    RegisteredShowInCombatHooks[key] = true
+FadeBlizzardBars.RegisterHook = function(key)
+    RegisteredHooks[key] = true
 end
 
-FadeBlizzardBars.IsShowInCombatHookRegistered = function(key)
-    return RegisteredShowInCombatHooks[key] == true
+FadeBlizzardBars.IsHookRegistered = function(key)
+    return RegisteredHooks[key] == true
 end

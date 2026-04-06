@@ -8,6 +8,7 @@ local FADE_IN_LABEL = "Fade In Time"
 local FADE_OUT_LABEL = "Fade Out Time"
 local FADE_OUT_DELAY_LABEL = "Fade Out Delay"
 local SHOW_IN_COMBAT_LABEL = "Show in Combat"
+local SHOW_ON_MOUNT_LABEL = "Show on Mount"
 
 local function ApplyClickThroughOption(barKey, barOption, value)
     FadeBlizzardBars.SetBarOption(barKey, barOption, value)
@@ -67,10 +68,21 @@ return {
                 ApplyFadeOption(barKey, "showInCombat", value)
             end,
         },
+        showOnMount = {
+            name = SHOW_ON_MOUNT_LABEL,
+            type = "toggle",
+            order = 3,
+            get = function()
+                return FadeBlizzardBars.GetBarOption(barKey, "showOnMount")
+            end,
+            set = function(_, value)
+                ApplyFadeOption(barKey, "showOnMount", value)
+            end,
+        },
         alpha = {
             name = OPACITY_LABEL,
             type = "range",
-            order = 3,
+            order = 4,
             min = 0,
             max = 1,
             step = 0.01,
@@ -82,7 +94,7 @@ return {
                 ApplyFadeOption(barKey, "alpha", value)
             end,
         },
-        spacer = GetSpacer(4),
+        spacer = GetSpacer(5),
         fadeSettings = {
             name = FADE_SETTINGS_LABEL,
             type = "group",
@@ -164,7 +176,7 @@ local function ApplyMainBarAdditionalOptions(args)
     args.showOnPageChange = {
         name = "Show on Page Change",
         type = "toggle",
-        order = 2.5,
+        order = 3.5,
             get = function()
                 return FadeBlizzardBars.GetBarOption("mainActionBar", "additionalOptions").showOnPageChange == true
             end,

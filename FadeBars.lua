@@ -2,7 +2,7 @@ local _, FadeBlizzardBars = ...
 local _G = _G
 local MainActionBar = FadeBlizzardBars.ActionBarNames.MainActionBar
 
-local inCombat = false;
+local inCombat = false
 
 local function SetIsInCombat(value)
     if inCombat == value then
@@ -11,7 +11,6 @@ local function SetIsInCombat(value)
 
     inCombat = value
 end
-
 
 local function IsFadeEnabled(barKey)
     return FadeBlizzardBars.GetBarOption(barKey, "fade") == true
@@ -23,6 +22,10 @@ end
 
 local function LockActionBarInCombat(barKey)
     return inCombat == true and FadeBlizzardBars.GetBarOption(barKey, "showInCombat") == true
+end
+
+local function LockActionBarOnMount(barKey)
+    return IsMounted() == true and FadeBlizzardBars.GetBarOption(barKey, "showOnMount") == true
 end
 
 local function UpdateVisibility(page, showOnPageChange, fadeInCallback, fadeOutCallback)
@@ -52,12 +55,11 @@ local function RegisterFadeHook(bar, barKey, buttons, fadeInCallback, fadeOutCal
 end
 
 local function RegisterCombatHook()
-    if FadeBlizzardBars.IsShowInCombatHookRegistered("FadeCombatHook") then
+    if FadeBlizzardBars.IsHookRegistered("FadeCombatHook") then
         return
     end
 
-    print("Registering combat hooks")
-    FadeBlizzardBars.RegisterShowInCombatHook("FadeCombatHook")
+    FadeBlizzardBars.RegisterHook("FadeCombatHook")
     FadeBlizzardBars:RegisterEvent("PLAYER_REGEN_DISABLED", function()
         SetIsInCombat(true)
         for _, barData in ipairs(FadeBlizzardBars.ActionBarCollection) do
@@ -75,6 +77,32 @@ local function RegisterCombatHook()
         for _, barData in ipairs(FadeBlizzardBars.ActionBarCollection) do
             if FadeBlizzardBars.GetBarOption(barData.key, "showInCombat") == true then
                 FadeBlizzardBars:ApplyFade(barData.key)
+            end
+        end
+    end)
+end
+
+local function RegisterOnMountHook()
+    if FadeBlizzardBars.IsHookRegistered("FadeOnMountHook") then
+        return
+    end
+
+    FadeBlizzardBars.RegisterHook("FadeOnMountHook")
+    FadeBlizzardBars:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED", function()
+        if IsMounted() == true then
+            for _, barData in ipairs(FadeBlizzardBars.ActionBarCollection) do
+                if FadeBlizzardBars.GetBarOption(barData.key, "showOnMount") == true then
+                    local bar = _G[barData.frame]
+                    if bar then
+                        bar:SetAlpha(1)
+                    end
+                end
+            end
+        else
+            for _, barData in ipairs(FadeBlizzardBars.ActionBarCollection) do
+                if FadeBlizzardBars.GetBarOption(barData.key, "showOnMount") == true then
+                    FadeBlizzardBars:ApplyFade(barData.key)
+                end
             end
         end
     end)
@@ -110,6 +138,7 @@ local function ShouldApplyFadeOut(key, bar, isMainActionBar, alpha)
     if not IsFadeEnabled(key)
         or (isMainActionBar and GetActionBarPage() ~= 1 and IsShowOnPageChangeEnabled())
         or LockActionBarInCombat(key)
+        or LockActionBarOnMount(key)
         then return false
     end
 
@@ -135,6 +164,7 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
     end
 
     RegisterCombatHook()
+    RegisterOnMountHook()
     for key, option in pairs(options) do
         local barData = FadeBlizzardBars.GetBarByKey(key)
         local bar = _G[barData.frame]
