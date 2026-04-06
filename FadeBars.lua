@@ -2,8 +2,8 @@ local _, FadeBlizzardBars = ...
 local _G = _G
 local MainActionBar = FadeBlizzardBars.ActionBarNames.MainActionBar
 
-local function UpdateVisibility(page, fadeInCallback, fadeOutCallback)
-    if page ~= 1 then
+local function UpdateVisibility(page, showOnPageChange, fadeInCallback, fadeOutCallback)
+    if page ~= 1 and showOnPageChange then
         fadeInCallback()
     else
         fadeOutCallback()
@@ -42,7 +42,11 @@ local function RegisterFadeHook(bar, barKey, buttons, fadeInCallback, fadeOutCal
     end
 end
 
-local function RegisterPageWatcher(barKey, fadeInCallback, fadeOutCallback)
+local function IsShowOnPageChangeEnabled()
+    return FadeBlizzardBars.GetBarOption("mainActionBar", "additionalOptions").showOnPageChange == true
+end
+
+local function RegisterMainAcionBarPageWatcher(barKey, fadeInCallback, fadeOutCallback)
     if FadeBlizzardBars.PageWatchers[barKey] ~= nil then
         return
     end
@@ -50,7 +54,7 @@ local function RegisterPageWatcher(barKey, fadeInCallback, fadeOutCallback)
     local pageWatcher = CreateFrame("Frame")
     pageWatcher:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
     pageWatcher:SetScript("OnEvent", function(_, _)
-        UpdateVisibility(GetActionBarPage(), fadeInCallback, fadeOutCallback)
+        UpdateVisibility(GetActionBarPage(), IsShowOnPageChangeEnabled(), fadeInCallback, fadeOutCallback)
     end)
     FadeBlizzardBars.PageWatchers[barKey] = pageWatcher
 end
@@ -73,6 +77,7 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
         local bar = _G[barData.frame]
 
         if bar and option.fade then
+            local isMainActionBar = barData.frame == MainActionBar
             bar:SetAlpha(option.alpha or 0)
             local fadeTimer = nil
 
@@ -94,6 +99,10 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
                     return
                 end
 
+                if isMainActionBar and GetActionBarPage() ~= 1 and IsShowOnPageChangeEnabled() then
+                    return
+                end
+
                 fadeTimer = C_Timer.NewTimer(option.fadeSettings.fadeOutDelay or 0,
                 function()
                     UIFrameFadeOut(bar, option.fadeSettings.fadeOutTime or 0, bar:GetAlpha(), option.alpha or 0)
@@ -102,8 +111,8 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
             end
 
             RegisterFadeHook(bar, key, barData.buttons, FadeIn, FadeOut)
-            if barData.frame == MainActionBar then
-                RegisterPageWatcher(key, FadeIn, FadeOut)
+            if isMainActionBar then
+                RegisterMainAcionBarPageWatcher(key, FadeIn, FadeOut)
             end
         elseif bar then
             bar:SetAlpha(1)

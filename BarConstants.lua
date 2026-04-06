@@ -63,6 +63,8 @@ FadeBlizzardBars.DbDefaults = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
+            }, additionalOptions = {
+                showOnPageChange = false,
             } },
             multiBarBottomLeft = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,

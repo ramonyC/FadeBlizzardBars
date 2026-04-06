@@ -52,3 +52,16 @@ FadeBlizzardBars.SetBarOption = function(barKey, optionKey, value)
 
     userProfile.barOptions[barKey][optionKey] = value
 end
+
+FadeBlizzardBars.SetBarAdditionalOption = function(barKey, optionKey, additionalOptionKey, value)
+    local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
+    if not userProfile then
+        return
+    end
+
+    if not barKey or not optionKey or not additionalOptionKey then
+        return
+    end
+
+    userProfile.barOptions[barKey][optionKey][additionalOptionKey] = value
+end

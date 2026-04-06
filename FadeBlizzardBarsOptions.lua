@@ -133,13 +133,33 @@ return {
     }
 end
 
-local function GetOptionGroupConfig(label, barKey, order)
-    return {
+local function GetOptionGroupConfig(label, barKey, order, applyAdditionalOptionsCallback)
+    local config = {
         name = label,
         type = "group",
         args = GetOptionConfigArgs(barKey),
         order = order,
     }
+
+    if applyAdditionalOptionsCallback ~= nil then
+        applyAdditionalOptionsCallback(config.args)
+    end
+
+    return config
+end
+
+local function ApplyMainBarAdditionalOptions(args)
+    args.showOnPageChange = {
+        name = "Show on Page Change",
+        type = "toggle",
+        order = 1.5,
+            get = function()
+                return FadeBlizzardBars.GetBarOption("mainActionBar", "additionalOptions").showOnPageChange == true
+            end,
+            set = function(_, value)
+                FadeBlizzardBars.SetBarAdditionalOption("mainActionBar", "additionalOptions", "showOnPageChange", value)
+            end
+        }
 end
 
 -- Options dialog
@@ -184,7 +204,8 @@ FadeBlizzardBars.OptionsConfig = {
             childGroups = "tree",
             order = 2,
             args = {
-                mainBarOption = GetOptionGroupConfig("Main Action Bar", "mainActionBar", 3),
+                mainBarOption
+                    = GetOptionGroupConfig("Main Action Bar", "mainActionBar", 3, ApplyMainBarAdditionalOptions),
                 bottomLeftBarOption = GetOptionGroupConfig("Action Bar 2", "multiBarBottomLeft", 4),
                 bottomRightBarOption = GetOptionGroupConfig("Action Bar 3", "multiBarBottomRight", 5),
                 rightBarOption = GetOptionGroupConfig("Action Bar 4", "multiBarRight", 6),
