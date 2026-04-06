@@ -5,7 +5,7 @@
 ]]
 
 local _, FadeBlizzardBars = ...
-FadeBlizzardBars = LibStub("AceAddon-3.0"):NewAddon(FadeBlizzardBars, "FadeBlizzardBars");
+FadeBlizzardBars = LibStub("AceAddon-3.0"):NewAddon(FadeBlizzardBars, "FadeBlizzardBars", "AceEvent-3.0", "AceConsole-3.0");
 _G.FadeBlizzardBars = FadeBlizzardBars
 
 function FadeBlizzardBars:OnInitialize()

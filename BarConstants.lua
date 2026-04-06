@@ -59,64 +59,64 @@ FadeBlizzardBars.DbDefaults = {
 	profile = {
 		enabled = true,
         barOptions = {
-            mainActionBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            mainActionBar = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             }, additionalOptions = {
                 showOnPageChange = false,
             } },
-            multiBarBottomLeft = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            multiBarBottomLeft = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            multiBarBottomRight = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            multiBarBottomRight = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            multiBarRight = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            multiBarRight = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            multiBarLeft = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            multiBarLeft = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            multiBar5 = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            multiBar5 = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            multiBar6 = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            multiBar6 = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            multiBar7 = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            multiBar7 = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            petActionBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            petActionBar = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            stanceBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            stanceBar = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            bagsBar = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            bagsBar = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
             } },
-            microMenuContainer = { fade = false, clickThrough = false, alpha = 0, fadeSettings = {
+            microMenuContainer = { fade = false, clickThrough = false, showInCombat = false, alpha = 0, fadeSettings = {
                 fadeInTime = DefaultFadeConstants.fadeItTime,
                 fadeOutTime = DefaultFadeConstants.fadeOutTime,
                 fadeOutDelay = DefaultFadeConstants.fadeOutDelay,

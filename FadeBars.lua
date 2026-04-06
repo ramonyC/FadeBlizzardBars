@@ -2,26 +2,35 @@ local _, FadeBlizzardBars = ...
 local _G = _G
 local MainActionBar = FadeBlizzardBars.ActionBarNames.MainActionBar
 
+local inCombat = false;
+
+local function SetIsInCombat(value)
+    if inCombat == value then
+        return
+    end
+
+    inCombat = value
+end
+
+
+local function IsFadeEnabled(barKey)
+    return FadeBlizzardBars.GetBarOption(barKey, "fade") == true
+end
+
+local function IsShowOnPageChangeEnabled()
+    return FadeBlizzardBars.GetBarOption("mainActionBar", "additionalOptions").showOnPageChange == true
+end
+
+local function LockActionBarInCombat(barKey)
+    return inCombat == true and FadeBlizzardBars.GetBarOption(barKey, "showInCombat") == true
+end
+
 local function UpdateVisibility(page, showOnPageChange, fadeInCallback, fadeOutCallback)
     if page ~= 1 and showOnPageChange then
         fadeInCallback()
     else
         fadeOutCallback()
     end
-end
-
-local function IsFadeEnabled(barKey)
-    local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
-    if not userProfile then
-        return false
-    end
-
-    local option = userProfile.barOptions[barKey]
-    if not userProfile.enabled or not option then
-        return false
-    end
-
-    return option.fade
 end
 
 local function RegisterFadeHook(bar, barKey, buttons, fadeInCallback, fadeOutCallback)
@@ -42,8 +51,33 @@ local function RegisterFadeHook(bar, barKey, buttons, fadeInCallback, fadeOutCal
     end
 end
 
-local function IsShowOnPageChangeEnabled()
-    return FadeBlizzardBars.GetBarOption("mainActionBar", "additionalOptions").showOnPageChange == true
+local function RegisterCombatHook()
+    if FadeBlizzardBars.IsShowInCombatHookRegistered("FadeCombatHook") then
+        return
+    end
+
+    print("Registering combat hooks")
+    FadeBlizzardBars.RegisterShowInCombatHook("FadeCombatHook")
+    FadeBlizzardBars:RegisterEvent("PLAYER_REGEN_DISABLED", function()
+        SetIsInCombat(true)
+        for _, barData in ipairs(FadeBlizzardBars.ActionBarCollection) do
+            if FadeBlizzardBars.GetBarOption(barData.key, "showInCombat") == true then
+                local bar = _G[barData.frame]
+                if bar then
+                    bar:SetAlpha(1)
+                end
+            end
+        end
+    end)
+
+    FadeBlizzardBars:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+        SetIsInCombat(false)
+        for _, barData in ipairs(FadeBlizzardBars.ActionBarCollection) do
+            if FadeBlizzardBars.GetBarOption(barData.key, "showInCombat") == true then
+                FadeBlizzardBars:ApplyFade(barData.key)
+            end
+        end
+    end)
 end
 
 local function RegisterMainAcionBarPageWatcher(barKey, fadeInCallback, fadeOutCallback)
@@ -59,6 +93,34 @@ local function RegisterMainAcionBarPageWatcher(barKey, fadeInCallback, fadeOutCa
     FadeBlizzardBars.PageWatchers[barKey] = pageWatcher
 end
 
+local function ShouldApplyFadeIn(key, bar)
+    if not IsFadeEnabled(key) or LockActionBarInCombat(key) then
+        return false
+    end
+
+    if inCombat == true then
+        bar:SetAlpha(1)
+        return false
+    end
+
+    return true
+end
+
+local function ShouldApplyFadeOut(key, bar, isMainActionBar, alpha)
+    if not IsFadeEnabled(key)
+        or (isMainActionBar and GetActionBarPage() ~= 1 and IsShowOnPageChangeEnabled())
+        or LockActionBarInCombat(key)
+        then return false
+    end
+
+    if inCombat == true then
+        bar:SetAlpha(alpha or 0)
+        return false
+    end
+
+    return true
+end
+
 FadeBlizzardBars.HandleFadeBars = function(optionKey)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
@@ -72,6 +134,7 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
         options[optionKey] = userProfile.barOptions[optionKey]
     end
 
+    RegisterCombatHook()
     for key, option in pairs(options) do
         local barData = FadeBlizzardBars.GetBarByKey(key)
         local bar = _G[barData.frame]
@@ -82,7 +145,7 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
             local fadeTimer = nil
 
             local function FadeIn()
-                if not IsFadeEnabled(key) then
+                if not ShouldApplyFadeIn(key, bar) then
                     return
                 end
 
@@ -95,23 +158,19 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
             end
 
             local function FadeOut()
-                if not IsFadeEnabled(key) then
-                    return
-                end
-
-                if isMainActionBar and GetActionBarPage() ~= 1 and IsShowOnPageChangeEnabled() then
+                if not ShouldApplyFadeOut(key, bar, isMainActionBar, option.alpha) then
                     return
                 end
 
                 fadeTimer = C_Timer.NewTimer(option.fadeSettings.fadeOutDelay or 0,
-                function()
-                    UIFrameFadeOut(bar, option.fadeSettings.fadeOutTime or 0, bar:GetAlpha(), option.alpha or 0)
-                    fadeTimer = nil
-                end)
+                    function()
+                        UIFrameFadeOut(bar, option.fadeSettings.fadeOutTime or 0, bar:GetAlpha(), option.alpha or 0)
+                        fadeTimer = nil
+                    end)
             end
 
             RegisterFadeHook(bar, key, barData.buttons, FadeIn, FadeOut)
-            if isMainActionBar then
+            if isMainActionBar == true then
                 RegisterMainAcionBarPageWatcher(key, FadeIn, FadeOut)
             end
         elseif bar then
