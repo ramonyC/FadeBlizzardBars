@@ -28,6 +28,15 @@ FadeBlizzardBars.Utilities.SetAddonEnabled = function(value)
     userProfile.enabled = value;
 end
 
+FadeBlizzardBars.Utilities.GetDBBarOptions = function(barKey)
+    local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
+    if not userProfile then
+        return nil
+    end
+
+    return userProfile.barOptions[barKey]
+end
+
 FadeBlizzardBars.Utilities.GetDBBarOption = function(barKey, optionKey)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
