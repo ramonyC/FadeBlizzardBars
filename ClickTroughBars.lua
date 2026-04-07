@@ -15,7 +15,7 @@ FadeBlizzardBars.HandleClickThroughBars = function(optionKey)
     end
 
     for key, option in pairs(options) do
-        local barData = FadeBlizzardBars.GetBarByKey(key)
+        local barData = FadeBlizzardBars.Utilities.GetBarFromCollection(key)
         local bar = _G[barData.frame]
         if bar then
             for _, buttonKey in ipairs(barData.buttons) do

@@ -43,7 +43,7 @@ FadeBlizzardBars.ApplyClickThrough = function(_, optionKey)
 end
 
 FadeBlizzardBars.EnableAddon = function()
-    FadeBlizzardBars.SetIsEnabled(true)
+    FadeBlizzardBars.Utilities.SetAddonEnabled(true)
     FadeBlizzardBars:ApplyClickThrough()
     FadeBlizzardBars:ApplyFade()
 end

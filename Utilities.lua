@@ -1,6 +1,8 @@
 local _, FadeBlizzardBars = ...
 
-FadeBlizzardBars.GetBarByKey = function(key)
+FadeBlizzardBars.Utilities = {}
+
+FadeBlizzardBars.Utilities.GetBarFromCollection = function(key)
     for _, bar in ipairs(FadeBlizzardBars.ActionBarCollection) do
         if bar.key == key then
             return bar
@@ -8,7 +10,7 @@ FadeBlizzardBars.GetBarByKey = function(key)
     end
 end
 
-FadeBlizzardBars.IsEnabled = function()
+FadeBlizzardBars.Utilities.AddonEnabled = function()
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return false
@@ -17,7 +19,7 @@ FadeBlizzardBars.IsEnabled = function()
     return userProfile.enabled;
 end
 
-FadeBlizzardBars.SetIsEnabled = function(value)
+FadeBlizzardBars.Utilities.SetAddonEnabled = function(value)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
@@ -26,7 +28,7 @@ FadeBlizzardBars.SetIsEnabled = function(value)
     userProfile.enabled = value;
 end
 
-FadeBlizzardBars.GetBarOption = function(barKey, optionKey)
+FadeBlizzardBars.Utilities.GetDBBarOption = function(barKey, optionKey)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return nil
@@ -40,7 +42,7 @@ FadeBlizzardBars.GetBarOption = function(barKey, optionKey)
     return barOptions[optionKey]
 end
 
-FadeBlizzardBars.SetBarOption = function(barKey, optionKey, value)
+FadeBlizzardBars.Utilities.SetDBBarOption = function(barKey, optionKey, value)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
@@ -53,7 +55,7 @@ FadeBlizzardBars.SetBarOption = function(barKey, optionKey, value)
     userProfile.barOptions[barKey][optionKey] = value
 end
 
-FadeBlizzardBars.SetBarAdditionalOption = function(barKey, optionKey, additionalOptionKey, value)
+FadeBlizzardBars.Utilities.SetDBBarAdditionalOption = function(barKey, optionKey, additionalOptionKey, value)
     local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
     if not userProfile then
         return
