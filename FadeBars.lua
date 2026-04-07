@@ -14,6 +14,7 @@ end
 
 local function IsFadeEnabled(barKey)
     return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fade") == true
+        and FadeBlizzardBars.Utilities.AddonEnabled() == true
 end
 
 local function IsShowOnPageChangeEnabled()
