@@ -24,159 +24,173 @@ local function ApplyFadeOption(barKey, barOption, value)
     end
 end
 
-local function GetSpacer(order)
-    return {
-        name = " ",
-        type = "description",
-        order = order,
+local OptionBuilder = {
+    Order = 0,
+}
+
+function OptionBuilder:ResetOrder()
+    self.Order = 0
+end
+
+function OptionBuilder:BuildOption(label, type, getCallback, setCallback)
+    local option = {
+        order = self.Order,
     }
+
+    self.Order = self.Order + 1
+
+    option.name = label
+    option.type = type
+
+    if getCallback then
+        option.get = getCallback
+    end
+
+    if setCallback then
+        option.set = setCallback
+    end
+
+    return option
+end
+
+function OptionBuilder:BuildSlider(label, min, max, step,isPercent, getCallback, setCallback)
+    local option = self:BuildOption(label, "range", getCallback, setCallback)
+    option.min = min
+    option.max = max
+    option.step = step
+    option.isPercent = isPercent
+
+    return option
+end
+
+function OptionBuilder:BuildSpacer()
+    local option = self:BuildOption(" ", "description", nil, nil)
+    option.name = " "
+
+    return option
+end
+
+function OptionBuilder:BuildSettingsGroup(label, args)
+    local option = self:BuildOption(label, "group", nil, nil)
+    option.inline = true
+    option.args = args
+
+    return option
 end
 
 -- Options per bar
 local function GetOptionConfigArgs(barKey)
-return {
-        fade = {
-            name = FADE_LABEL,
-            type = "toggle",
-            order = 0,
-            get = function()
+    OptionBuilder:ResetOrder()
+
+    return {
+        fade = OptionBuilder:BuildOption(FADE_LABEL, "toggle",
+            function()
                 return FadeBlizzardBars.GetBarOption(barKey, "fade")
             end,
-            set = function(_, value)
+            function(_, value)
                 ApplyFadeOption(barKey, "fade", value)
-            end,
-        },
-        clickThrough = {
-            name = CLICK_THROUGH_LABEL,
-            type = "toggle",
-            order = 1,
-            get = function()
+            end),
+
+        clickThrough = OptionBuilder:BuildOption(CLICK_THROUGH_LABEL, "toggle",
+            function()
                 return FadeBlizzardBars.GetBarOption(barKey, "clickThrough")
             end,
-            set = function(_, value)
+            function(_, value)
                 ApplyClickThroughOption(barKey, "clickThrough", value)
-            end,
-        },
-        showInCombat = {
-            name = SHOW_IN_COMBAT_LABEL,
-            type = "toggle",
-            order = 2,
-            get = function()
+            end),
+
+        showInCombat = OptionBuilder:BuildOption(SHOW_IN_COMBAT_LABEL, "toggle",
+            function()
                 return FadeBlizzardBars.GetBarOption(barKey, "showInCombat")
             end,
-            set = function(_, value)
+            function(_, value)
                 ApplyFadeOption(barKey, "showInCombat", value)
-            end,
-        },
-        showOnMount = {
-            name = SHOW_ON_MOUNT_LABEL,
-            type = "toggle",
-            order = 3,
-            get = function()
+            end),
+
+        showOnMount = OptionBuilder:BuildOption(SHOW_ON_MOUNT_LABEL, "toggle",
+            function()
                 return FadeBlizzardBars.GetBarOption(barKey, "showOnMount")
             end,
-            set = function(_, value)
+            function(_, value)
                 ApplyFadeOption(barKey, "showOnMount", value)
-            end,
-        },
-        alpha = {
-            name = OPACITY_LABEL,
-            type = "range",
-            order = 4,
-            min = 0,
-            max = 1,
-            step = 0.01,
-            isPercent = true,
-            get = function()
+            end),
+
+        alpha = OptionBuilder:BuildSlider(OPACITY_LABEL, 0, 1, 0.01, true,
+            function()
                 return FadeBlizzardBars.GetBarOption(barKey, "alpha") or 0
             end,
-            set = function(_, value)
+            function(_, value)
                 ApplyFadeOption(barKey, "alpha", value)
-            end,
-        },
-        spacer = GetSpacer(5),
-        fadeSettings = {
-            name = FADE_SETTINGS_LABEL,
-            type = "group",
-            inline = true,
-            order = 5,
-            args = {
-                fadeInTime = {
-                    name = FADE_IN_LABEL,
-                    type = "range",
-                    order = 0,
-                    min = 0,
-                    max = 1,
-                    step = 0.1,
-                    get = function()
-                        return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeInTime
-                    end,
-                    set = function(_, value)
-                        local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
-                        fadeSettings.fadeInTime = value
+            end),
 
-                        ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
-                    end,
-                },
-                fadeOutTime = {
-                    name = FADE_OUT_LABEL,
-                    type = "range",
-                    order = 1,
-                    min = 0,
-                    max = 1,
-                    step = 0.1,
-                    get = function()
-                        return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeOutTime
-                    end,
-                    set = function(_, value)
-                        local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
-                        fadeSettings.fadeOutTime = value
+        spacer = OptionBuilder:BuildSpacer(),
+        fadeSettings = OptionBuilder:BuildSettingsGroup(FADE_SETTINGS_LABEL, {
+            fadeInTime = OptionBuilder:BuildSlider(FADE_IN_LABEL, 0, 1, 0.1,
+                false,
+                function()
+                    return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeInTime
+                end,
+                function(_, value)
+                    local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
+                    fadeSettings.fadeInTime = value
 
-                        ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
-                    end,
-                },
-                fadeOutDelay = {
-                    name = FADE_OUT_DELAY_LABEL,
-                    type = "range",
-                    order = 2,
-                    min = 0,
-                    max = 5,
-                    step = 0.1,
-                    get = function()
-                        return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeOutDelay
-                    end,
-                    set = function(_, value)
-                        local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
-                        fadeSettings.fadeOutDelay = value
+                    ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                end),
 
-                        ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
-                    end,
-                },
-            },
-        },
+            fadeOutTime = OptionBuilder:BuildSlider(FADE_OUT_LABEL, 0, 1, 0.1,
+                false,
+                function()
+                    return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeOutTime
+                end,
+                function(_, value)
+                    local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
+                    fadeSettings.fadeOutTime = value
+
+                    ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                end),
+
+            fadeOutDelay = OptionBuilder:BuildSlider(FADE_OUT_DELAY_LABEL, 0, 5, 0.1,
+                false,
+                function()
+                    return FadeBlizzardBars.GetBarOption(barKey, "fadeSettings").fadeOutDelay
+                end,
+                function(_, value)
+                    local fadeSettings = FadeBlizzardBars.GetBarOption(barKey, "fadeSettings")
+                    fadeSettings.fadeOutDelay = value
+
+                    ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                end),
+        }),
     }
 end
 
-local function GetOptionGroupConfig(label, barKey, order, applyAdditionalOptionsCallback)
+-- Starts from 3 as general settings, header and bars tab take 0, 1 and 2
+local ConfigBuilder = {
+    Order = 3,
+}
+
+function ConfigBuilder:GetOptionGroupConfig(label, barKey, applyAdditionalOptionsCallback)
     local config = {
         name = label,
         type = "group",
         args = GetOptionConfigArgs(barKey),
-        order = order,
     }
 
+    config.order = self.Order
+    self.Order = self.Order + 1
+
     if applyAdditionalOptionsCallback ~= nil then
-        applyAdditionalOptionsCallback(config.args)
+        applyAdditionalOptionsCallback(config.args, config.order)
     end
 
     return config
 end
 
-local function ApplyMainBarAdditionalOptions(args)
+local function ApplyMainBarAdditionalOptions(args, mainBarOrder)
     args.showOnPageChange = {
         name = "Show on Page Change",
         type = "toggle",
-        order = 3.5,
+        order = mainBarOrder + 0.1,
             get = function()
                 return FadeBlizzardBars.GetBarOption("mainActionBar", "additionalOptions").showOnPageChange == true
             end,
@@ -229,18 +243,18 @@ FadeBlizzardBars.OptionsConfig = {
             order = 2,
             args = {
                 mainBarOption
-                    = GetOptionGroupConfig("Main Action Bar", "mainActionBar", 3, ApplyMainBarAdditionalOptions),
-                bottomLeftBarOption = GetOptionGroupConfig("Action Bar 2", "multiBarBottomLeft", 4),
-                bottomRightBarOption = GetOptionGroupConfig("Action Bar 3", "multiBarBottomRight", 5),
-                rightBarOption = GetOptionGroupConfig("Action Bar 4", "multiBarRight", 6),
-                leftBarOption = GetOptionGroupConfig("Action Bar 5", "multiBarLeft", 7),
-                multiBar5Option = GetOptionGroupConfig("Action Bar 6", "multiBar5", 8),
-                multiBar6Option = GetOptionGroupConfig("Action Bar 7", "multiBar6", 9),
-                multiBar7Option = GetOptionGroupConfig("Action Bar 8", "multiBar7", 10),
-                petBarOption = GetOptionGroupConfig("Pet Action Bar", "petActionBar", 11),
-                stanceBarOption = GetOptionGroupConfig("Stance Bar", "stanceBar", 12),
-                bagsBarOption = GetOptionGroupConfig("Bags Bar", "bagsBar", 13),
-                microMenuOption = GetOptionGroupConfig("Micro Menu", "microMenuContainer", 14),
+                    = ConfigBuilder:GetOptionGroupConfig("Main Action Bar", "mainActionBar", ApplyMainBarAdditionalOptions),
+                bottomLeftBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 2", "multiBarBottomLeft"),
+                bottomRightBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 3", "multiBarBottomRight"),
+                rightBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 4", "multiBarRight"),
+                leftBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 5", "multiBarLeft"),
+                multiBar5Option = ConfigBuilder:GetOptionGroupConfig("Action Bar 6", "multiBar5"),
+                multiBar6Option = ConfigBuilder:GetOptionGroupConfig("Action Bar 7", "multiBar6"),
+                multiBar7Option = ConfigBuilder:GetOptionGroupConfig("Action Bar 8", "multiBar7"),
+                petBarOption = ConfigBuilder:GetOptionGroupConfig("Pet Action Bar", "petActionBar"),
+                stanceBarOption = ConfigBuilder:GetOptionGroupConfig("Stance Bar", "stanceBar"),
+                bagsBarOption = ConfigBuilder:GetOptionGroupConfig("Bags Bar", "bagsBar"),
+                microMenuOption = ConfigBuilder:GetOptionGroupConfig("Micro Menu", "microMenuContainer"),
             }
         },
         profiles = nil, -- set in OnInitialize

@@ -1,14 +1,6 @@
 local _, FadeBlizzardBars = ...
 local _G = _G
 
-FadeBlizzardBars.ApplyFade = function(_, optionKey)
-    FadeBlizzardBars.HandleFadeBars(optionKey)
-end
-
-FadeBlizzardBars.ApplyClickThrough = function(_, optionKey)
-    FadeBlizzardBars.HandleClickThroughBars(optionKey)
-end
-
 local function UnregisterPageWatcher(barKey)
     if not barKey then
         return
@@ -40,6 +32,14 @@ FadeBlizzardBars.DisableAddon = function()
 
         UnregisterPageWatcher(barData.key)
     end
+end
+
+FadeBlizzardBars.ApplyFade = function(_, optionKey)
+    FadeBlizzardBars.HandleFadeBars(optionKey)
+end
+
+FadeBlizzardBars.ApplyClickThrough = function(_, optionKey)
+    FadeBlizzardBars.HandleClickThroughBars(optionKey)
 end
 
 FadeBlizzardBars.EnableAddon = function()
