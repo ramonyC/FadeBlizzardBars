@@ -36,6 +36,12 @@ function FadeBlizzardBars:OnProfileChanged()
     self:ApplyFade()
 end
 
+FadeBlizzardBars:RegisterEvent("PLAYER_ENTERING_WORLD", function()
+    FadeBlizzardBars:RestoreBlizzardDefaults()
+    FadeBlizzardBars:ApplyClickThrough()
+    FadeBlizzardBars:ApplyFade()
+end)
+
 SLASH_FBB1 = "/fbb"
 SlashCmdList["FBB"] = function(msg)
     if msg == "off" then
