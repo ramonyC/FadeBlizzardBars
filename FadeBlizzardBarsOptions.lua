@@ -15,17 +15,22 @@ local SCALE_LABEL = "Scale"
 local FADE_OPTIONS_LABEL = "Fade & Click Through"
 local ADDITIONAL_OPTIONS_LABEL = "Blizzard Bar Extra"
 
-local function ApplyClickThroughOption(barKey, barOption, value)
+local function ApplyClickThroughOption(value, barKey, barOption)
     FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
     FadeBlizzardBars:ApplyClickThrough(barKey)
 end
 
-local function ApplyFadeOption(barKey, barOption, value)
-    FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
+local function ApplyFadeOption(value, barKey, barOption, additionalOption)
+    if additionalOption ~= nil then
+        FadeBlizzardBars.Utilities.SetDBBarAdditionalOption(barKey, barOption, additionalOption, value)
+    else
+        FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
+    end
+
     FadeBlizzardBars:ApplyFade(barKey)
 end
 
-local function ApplyScaleOption(barKey, barOption, additionalOption, value)
+local function ApplyScaleOption(value, barKey, barOption, additionalOption)
     FadeBlizzardBars.Utilities.SetDBBarAdditionalOption(barKey, barOption, additionalOption, value)
     FadeBlizzardBars:ApplyScale(barKey)
 end
@@ -94,7 +99,7 @@ local function GetOptionConfigArgs(barKey)
                 return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fade")
             end,
             function(_, value)
-                ApplyFadeOption(barKey, "fade", value)
+                ApplyFadeOption(value, barKey, "fade")
             end),
 
         clickThrough = OptionBuilder:BuildOption(CLICK_THROUGH_LABEL, "toggle",
@@ -102,7 +107,7 @@ local function GetOptionConfigArgs(barKey)
                 return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "clickThrough")
             end,
             function(_, value)
-                ApplyClickThroughOption(barKey, "clickThrough", value)
+                ApplyClickThroughOption(value, barKey, "clickThrough")
             end),
 
         showInCombat = OptionBuilder:BuildOption(SHOW_IN_COMBAT_LABEL, "toggle",
@@ -110,7 +115,7 @@ local function GetOptionConfigArgs(barKey)
                 return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "showInCombat")
             end,
             function(_, value)
-                ApplyFadeOption(barKey, "showInCombat", value)
+                ApplyFadeOption(value, barKey, "showInCombat")
             end),
 
         showOnMount = OptionBuilder:BuildOption(SHOW_ON_MOUNT_LABEL, "toggle",
@@ -118,7 +123,7 @@ local function GetOptionConfigArgs(barKey)
                 return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "showOnMount")
             end,
             function(_, value)
-                ApplyFadeOption(barKey, "showOnMount", value)
+                ApplyFadeOption(value, barKey, "showOnMount")
             end),
 
         alpha = OptionBuilder:BuildSlider(OPACITY_LABEL, 0, 1, 0.01, true,
@@ -126,7 +131,7 @@ local function GetOptionConfigArgs(barKey)
                 return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "alpha") or 0
             end,
             function(_, value)
-                ApplyFadeOption(barKey, "alpha", value)
+                ApplyFadeOption(value, barKey, "alpha")
             end),
 
         spacer = OptionBuilder:BuildSpacer(),
@@ -137,10 +142,7 @@ local function GetOptionConfigArgs(barKey)
                     return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fadeSettings").fadeInTime
                 end,
                 function(_, value)
-                    local fadeSettings = FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fadeSettings")
-                    fadeSettings.fadeInTime = value
-
-                    ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                    ApplyFadeOption(value, barKey, "fadeSettings", "fadeInTime")
                 end),
 
             fadeOutTime = OptionBuilder:BuildSlider(FADE_OUT_LABEL, 0, 1, 0.1,
@@ -149,10 +151,7 @@ local function GetOptionConfigArgs(barKey)
                     return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fadeSettings").fadeOutTime
                 end,
                 function(_, value)
-                    local fadeSettings = FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fadeSettings")
-                    fadeSettings.fadeOutTime = value
-
-                    ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                    ApplyFadeOption(value, barKey, "fadeSettings", "fadeOutTime")
                 end),
 
             fadeOutDelay = OptionBuilder:BuildSlider(FADE_OUT_DELAY_LABEL, 0, 5, 0.1,
@@ -161,10 +160,7 @@ local function GetOptionConfigArgs(barKey)
                     return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fadeSettings").fadeOutDelay
                 end,
                 function(_, value)
-                    local fadeSettings = FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fadeSettings")
-                    fadeSettings.fadeOutDelay = value
-
-                    ApplyFadeOption(barKey, "fadeSettings", fadeSettings)
+                    ApplyFadeOption(value, barKey, "fadeSettings", "fadeOutDelay")
                 end),
         }),
     }
@@ -175,14 +171,14 @@ local function GetOptionConfigArgs(barKey)
             return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "scaleSettings").enabled == true
         end,
         function(_, value)
-            ApplyScaleOption(barKey, "scaleSettings", "enabled", value)
+            ApplyScaleOption(value, barKey, "scaleSettings", "enabled")
         end),
     scale = OptionBuilder:BuildSlider(SCALE_LABEL, 0.5, 1.5, 0.01, true,
         function()
             return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "scaleSettings").scale
         end,
         function(_, value)
-            ApplyScaleOption(barKey, "scaleSettings", "scale", value)
+            ApplyScaleOption(value, barKey, "scaleSettings", "scale")
         end),
     }
 
