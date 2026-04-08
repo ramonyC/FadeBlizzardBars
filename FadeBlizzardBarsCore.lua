@@ -29,6 +29,14 @@ function FadeBlizzardBars:RestoreBlizzardDefaults(isEnabled)
                 local btn = _G[buttonKey]
                 if btn then
                     btn:EnableMouse(true)
+                    local hotkey = btn.HotKey
+                    if hotkey then
+                        hotkey:Show()
+                    end
+                    local macroName = btn.Name
+                    if macroName then
+                        macroName:Show()
+                    end
                 end
             end
         end
@@ -60,9 +68,16 @@ function FadeBlizzardBars:ApplyScale(optionKey)
     end
 end
 
+function FadeBlizzardBars:ApplyHideHotKeys(optionKey)
+    if self.Utilities.AddonEnabled() then
+        self:HideHotKeys(optionKey)
+    end
+end
+
 function FadeBlizzardBars:EnableAddon()
     self.Utilities.SetAddonEnabled(true)
     self:ApplyClickThrough()
     self:ApplyFade()
     self:ApplyScale()
+    self:ApplyHideHotKeys()
 end

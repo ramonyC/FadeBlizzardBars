@@ -14,19 +14,19 @@ function FadeBlizzardBars:HandleScaleBars(optionKey)
         options[optionKey] = userProfile.barOptions[optionKey]
     end
 
-    for key, option in pairs(options) do
-        local scaleSettings = option.scaleSettings
-        local barData = self.Utilities.GetBarFromCollection(key)
-        local bar = _G[barData.frame]
-        if bar then
-            if scaleSettings.enabled == true then
-                -- Required to apply setting on /reload or login
-                C_Timer.After(0, function()
+    -- Required to apply setting on /reload or login
+    C_Timer.After(0, function()
+        for key, option in pairs(options) do
+            local scaleSettings = option.scaleSettings
+            local barData = self.Utilities.GetBarFromCollection(key)
+            local bar = _G[barData.frame]
+            if bar then
+                if scaleSettings.enabled == true then
                     bar:SetScale(scaleSettings.scale or 1)
-                end)
-            else
-                bar:SetScale(1)
+                else
+                    bar:SetScale(1)
+                end
             end
         end
-    end
+    end)
 end

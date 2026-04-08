@@ -11,6 +11,8 @@ local SHOW_IN_COMBAT_LABEL = "Show in Combat"
 local SHOW_ON_MOUNT_LABEL = "Show on Mount"
 local SCALE_BAR_LABEL = "Scale Bar"
 local SCALE_LABEL = "Scale"
+local HIDE_HOTKEYS_LABEL = "Hide Hotkeys"
+local HIDE_MACROS_NAMES_LABEL = "Hide Macros Names"
 
 local FADE_OPTIONS_LABEL = "Fade & Click Through"
 local ADDITIONAL_OPTIONS_LABEL = "Blizzard Bar Extra"
@@ -33,6 +35,11 @@ end
 local function ApplyScaleOption(value, barKey, barOption, additionalOption)
     FadeBlizzardBars.Utilities.SetDBBarAdditionalOption(barKey, barOption, additionalOption, value)
     FadeBlizzardBars:ApplyScale(barKey)
+end
+
+local function ApplyHideHotKeysOption(value, barKey, barOption)
+    FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
+    FadeBlizzardBars:HideHotKeys()
 end
 
 local OptionBuilder = {
@@ -179,6 +186,20 @@ local function GetOptionConfigArgs(barKey)
         end,
         function(_, value)
             ApplyScaleOption(value, barKey, "scaleSettings", "scale")
+        end),
+    hideHotKeys = OptionBuilder:BuildOption(HIDE_HOTKEYS_LABEL, "toggle",
+        function()
+            return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "hideHotKeys") == true
+        end,
+        function(_, value)
+            ApplyHideHotKeysOption(value, barKey, "hideHotKeys")
+        end),
+    hideMacrosNames = OptionBuilder:BuildOption(HIDE_MACROS_NAMES_LABEL, "toggle",
+        function()
+            return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "hideMacrosNames") == true
+        end,
+        function(_, value)
+            ApplyHideHotKeysOption(value, barKey, "hideMacrosNames")
         end),
     }
 

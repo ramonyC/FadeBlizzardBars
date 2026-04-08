@@ -97,6 +97,8 @@ local function BuildDefaultDbBarOption(additionalOptions)
         showInCombat = false,
         showOnMount = false,
         alpha = 0,
+        hideHotKeys = false,
+        hideMacrosNames = false,
         fadeSettings = DefaultFadeSettings,
         scaleSettings = DefaultScaleSettings,
     }

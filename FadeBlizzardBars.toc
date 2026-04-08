@@ -46,3 +46,4 @@ BarConstants.lua
 FadeBars.lua
 ClickTroughBars.lua
 FadeBarsScale.lua
+FadeBarsHideHotKeys.lua

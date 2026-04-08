@@ -35,6 +35,7 @@ function FadeBlizzardBars:OnProfileChanged()
     self:ApplyClickThrough()
     self:ApplyFade()
     self:ApplyScale()
+    self:ApplyHideHotKeys()
 end
 
 FadeBlizzardBars:RegisterEvent("PLAYER_ENTERING_WORLD", function()
@@ -42,6 +43,7 @@ FadeBlizzardBars:RegisterEvent("PLAYER_ENTERING_WORLD", function()
     FadeBlizzardBars:ApplyClickThrough()
     FadeBlizzardBars:ApplyFade()
     FadeBlizzardBars:ApplyScale()
+    FadeBlizzardBars:ApplyHideHotKeys()
 end)
 
 SLASH_FBB1 = "/fbb"
