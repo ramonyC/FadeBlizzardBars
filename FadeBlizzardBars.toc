@@ -45,3 +45,4 @@ BarConstants.lua
 ## Handlers
 FadeBars.lua
 ClickTroughBars.lua
+FadeBarsScale.lua

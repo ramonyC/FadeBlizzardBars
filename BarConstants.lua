@@ -85,6 +85,11 @@ local DefaultFadeSettings = {
     fadeOutDelay = DefaultFadeConstants.fadeOutDelay,
 }
 
+local DefaultScaleSettings = {
+    scale = 1,
+    enabled = false,
+}
+
 local function BuildDefaultDbBarOption(additionalOptions)
     local option = {
         fade = false,
@@ -93,6 +98,7 @@ local function BuildDefaultDbBarOption(additionalOptions)
         showOnMount = false,
         alpha = 0,
         fadeSettings = DefaultFadeSettings,
+        scaleSettings = DefaultScaleSettings,
     }
 
     if additionalOptions ~= nil then

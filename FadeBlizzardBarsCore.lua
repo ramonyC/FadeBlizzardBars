@@ -23,6 +23,7 @@ function FadeBlizzardBars:RestoreBlizzardDefaults(isEnabled)
         local bar = _G[barData.frame]
         if bar then
             bar:SetAlpha(1)
+            bar:SetScale(1)
             bar:EnableMouse(true)
             for _, buttonKey in ipairs(barData.buttons) do
                 local btn = _G[buttonKey]
@@ -53,8 +54,15 @@ function FadeBlizzardBars:ApplyClickThrough(optionKey)
     end
 end
 
+function FadeBlizzardBars:ApplyScale(optionKey)
+    if self.Utilities.AddonEnabled() then
+        self:HandleScaleBars(optionKey)
+    end
+end
+
 function FadeBlizzardBars:EnableAddon()
     self.Utilities.SetAddonEnabled(true)
     self:ApplyClickThrough()
     self:ApplyFade()
+    self:ApplyScale()
 end

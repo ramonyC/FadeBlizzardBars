@@ -9,6 +9,11 @@ local FADE_OUT_LABEL = "Fade Out Time"
 local FADE_OUT_DELAY_LABEL = "Fade Out Delay"
 local SHOW_IN_COMBAT_LABEL = "Show in Combat"
 local SHOW_ON_MOUNT_LABEL = "Show on Mount"
+local SCALE_BAR_LABEL = "Scale Bar"
+local SCALE_LABEL = "Scale"
+
+local FADE_OPTIONS_LABEL = "Fade & Click Through"
+local ADDITIONAL_OPTIONS_LABEL = "Blizzard Bar Extra"
 
 local function ApplyClickThroughOption(barKey, barOption, value)
     FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
@@ -18,6 +23,11 @@ end
 local function ApplyFadeOption(barKey, barOption, value)
     FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
     FadeBlizzardBars:ApplyFade(barKey)
+end
+
+local function ApplyScaleOption(barKey, barOption, additionalOption, value)
+    FadeBlizzardBars.Utilities.SetDBBarAdditionalOption(barKey, barOption, additionalOption, value)
+    FadeBlizzardBars:ApplyScale(barKey)
 end
 
 local OptionBuilder = {
@@ -78,7 +88,7 @@ end
 local function GetOptionConfigArgs(barKey)
     OptionBuilder:ResetOrder()
 
-    return {
+    local mainOptionArgs = {
         fade = OptionBuilder:BuildOption(FADE_LABEL, "toggle",
             function()
                 return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "fade")
@@ -158,6 +168,38 @@ local function GetOptionConfigArgs(barKey)
                 end),
         }),
     }
+
+    local additionalOptionArgs = {
+    enableScale = OptionBuilder:BuildOption(SCALE_BAR_LABEL, "toggle",
+        function()
+            return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "scaleSettings").enabled == true
+        end,
+        function(_, value)
+            ApplyScaleOption(barKey, "scaleSettings", "enabled", value)
+        end),
+    scale = OptionBuilder:BuildSlider(SCALE_LABEL, 0.5, 1.5, 0.01, true,
+        function()
+            return FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "scaleSettings").scale
+        end,
+        function(_, value)
+            ApplyScaleOption(barKey, "scaleSettings", "scale", value)
+        end),
+    }
+
+    return {
+        mainOptions ={
+            order = 0,
+            type = "group",
+            name = FADE_OPTIONS_LABEL,
+            args = mainOptionArgs,
+        },
+        additionalOptions = {
+            order = 1,
+            type = "group",
+            name = ADDITIONAL_OPTIONS_LABEL,
+            args = additionalOptionArgs,
+        },
+    }
 end
 
 -- Starts from 3 as general settings, header and bars tab take 0, 1 and 2
@@ -165,18 +207,20 @@ local ConfigBuilder = {
     Order = 3,
 }
 
-function ConfigBuilder:GetOptionGroupConfig(label, barKey, applyAdditionalOptionsCallback)
+-- customOption = { type: string, apply: function }
+function ConfigBuilder:GetOptionGroupConfig(label, barKey, customOption)
     local config = {
         name = label,
         type = "group",
+        childGroups = "tab",
         args = GetOptionConfigArgs(barKey),
     }
 
     config.order = self.Order
     self.Order = self.Order + 1
 
-    if applyAdditionalOptionsCallback ~= nil then
-        applyAdditionalOptionsCallback(config.args, config.order)
+    if customOption ~= nil then
+        customOption.apply(config.args[customOption.type].args, config.order)
     end
 
     return config
@@ -188,10 +232,12 @@ local function ApplyMainBarAdditionalOptions(args, mainBarOrder)
         type = "toggle",
         order = mainBarOrder + 0.1,
             get = function()
-                return FadeBlizzardBars.Utilities.GetDBBarOption("mainActionBar", "additionalOptions").showOnPageChange == true
+                return FadeBlizzardBars.Utilities.GetDBBarOption("mainActionBar", "additionalOptions")
+                    .showOnPageChange == true
             end,
             set = function(_, value)
-                FadeBlizzardBars.Utilities.SetDBBarAdditionalOption("mainActionBar", "additionalOptions", "showOnPageChange", value)
+                FadeBlizzardBars.Utilities
+                    .SetDBBarAdditionalOption("mainActionBar", "additionalOptions", "showOnPageChange", value)
             end
         }
 end
@@ -238,9 +284,9 @@ FadeBlizzardBars.OptionsConfig = {
             childGroups = "tree",
             order = 2,
             args = {
-                mainBarOption
-                    = ConfigBuilder
-                        :GetOptionGroupConfig("Main Action Bar", "mainActionBar", ApplyMainBarAdditionalOptions),
+                mainBarOption = ConfigBuilder
+                    :GetOptionGroupConfig("Main Action Bar", "mainActionBar",
+                        { type = "mainOptions", apply = ApplyMainBarAdditionalOptions }),
                 bottomLeftBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 2", "multiBarBottomLeft"),
                 bottomRightBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 3", "multiBarBottomRight"),
                 rightBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 4", "multiBarRight"),

@@ -34,12 +34,14 @@ function FadeBlizzardBars:OnProfileChanged()
     self:RestoreBlizzardDefaults()
     self:ApplyClickThrough()
     self:ApplyFade()
+    self:ApplyScale()
 end
 
 FadeBlizzardBars:RegisterEvent("PLAYER_ENTERING_WORLD", function()
     FadeBlizzardBars:RestoreBlizzardDefaults()
     FadeBlizzardBars:ApplyClickThrough()
     FadeBlizzardBars:ApplyFade()
+    FadeBlizzardBars:ApplyScale()
 end)
 
 SLASH_FBB1 = "/fbb"
