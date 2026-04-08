@@ -23,4 +23,7 @@ globals = {
     "ReloadUI",
     "GetActionBarPage",
     "IsMounted",
+    "InCombatLockdown",
+    "RANGE_INDICATOR",
+    "Settings",
 }
