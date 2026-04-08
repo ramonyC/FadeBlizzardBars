@@ -8,8 +8,8 @@
 ## X-Email: chernush.vitaly at gmail dot CollectionsMicroButton
 
 ## X-Curse-Project-ID: 1505285
-
 ## X-Category: Action bars
+## Category: Action Bars
 ## X-License: MIT
 
 ## Version: @project-version@

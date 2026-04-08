@@ -38,11 +38,11 @@ local function UpdateVisibility(page, showOnPageChange, fadeInCallback, fadeOutC
 end
 
 local function RegisterFadeHook(bar, barKey, buttons, fadeInCallback, fadeOutCallback)
-    if FadeBlizzardBars.IsFadeHookRegistered(barKey) then
+    if FadeBlizzardBars.IsHookRegistered(barKey) then
         return
     end
 
-    FadeBlizzardBars.RegisterFadeHook(barKey)
+    FadeBlizzardBars.RegisterHook(barKey)
     bar:HookScript("OnEnter", fadeInCallback)
     bar:HookScript("OnLeave", fadeOutCallback)
 
@@ -151,8 +151,8 @@ local function ShouldApplyFadeOut(key, bar, isMainActionBar, alpha)
     return true
 end
 
-FadeBlizzardBars.HandleFadeBars = function(optionKey)
-    local userProfile = FadeBlizzardBars.db and FadeBlizzardBars.db.profile or nil
+function FadeBlizzardBars:HandleFadeBars(optionKey)
+    local userProfile = self.db and self.db.profile or nil
     if not userProfile then
         return
     end
@@ -167,7 +167,7 @@ FadeBlizzardBars.HandleFadeBars = function(optionKey)
     RegisterCombatHook()
     RegisterOnMountHook()
     for key, option in pairs(options) do
-        local barData = FadeBlizzardBars.Utilities.GetBarFromCollection(key)
+        local barData = self.Utilities.GetBarFromCollection(key)
         local bar = _G[barData.frame]
 
         if bar and option.fade then

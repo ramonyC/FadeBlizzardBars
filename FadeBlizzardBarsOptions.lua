@@ -12,16 +12,12 @@ local SHOW_ON_MOUNT_LABEL = "Show on Mount"
 
 local function ApplyClickThroughOption(barKey, barOption, value)
     FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
-    if FadeBlizzardBars.Utilities.AddonEnabled() then
-        FadeBlizzardBars:ApplyClickThrough(barKey)
-    end
+    FadeBlizzardBars:ApplyClickThrough(barKey)
 end
 
 local function ApplyFadeOption(barKey, barOption, value)
     FadeBlizzardBars.Utilities.SetDBBarOption(barKey, barOption, value)
-    if FadeBlizzardBars.Utilities.AddonEnabled() then
-        FadeBlizzardBars:ApplyFade(barKey)
-    end
+    FadeBlizzardBars:ApplyFade(barKey)
 end
 
 local OptionBuilder = {
@@ -243,7 +239,8 @@ FadeBlizzardBars.OptionsConfig = {
             order = 2,
             args = {
                 mainBarOption
-                    = ConfigBuilder:GetOptionGroupConfig("Main Action Bar", "mainActionBar", ApplyMainBarAdditionalOptions),
+                    = ConfigBuilder
+                        :GetOptionGroupConfig("Main Action Bar", "mainActionBar", ApplyMainBarAdditionalOptions),
                 bottomLeftBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 2", "multiBarBottomLeft"),
                 bottomRightBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 3", "multiBarBottomRight"),
                 rightBarOption = ConfigBuilder:GetOptionGroupConfig("Action Bar 4", "multiBarRight"),

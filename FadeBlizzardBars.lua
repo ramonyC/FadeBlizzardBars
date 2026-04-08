@@ -31,10 +31,9 @@ function FadeBlizzardBars:OnInitialize()
 end
 
 function FadeBlizzardBars:OnProfileChanged()
-    if self:IsEnabled() then
-        self:ApplyClickThrough()
-        self:ApplyFade()
-    end
+    self:RestoreBlizzardDefaults()
+    self:ApplyClickThrough()
+    self:ApplyFade()
 end
 
 SLASH_FBB1 = "/fbb"

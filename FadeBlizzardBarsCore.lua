@@ -14,10 +14,12 @@ local function UnregisterPageWatcher(barKey)
     end
 end
 
-FadeBlizzardBars.DisableAddon = function()
-    FadeBlizzardBars.db.profile.enabled = false
+function FadeBlizzardBars:RestoreBlizzardDefaults(isEnabled)
+    if isEnabled == true or self.Utilities.AddonEnabled() == true then
+        return
+    end
 
-    for _, barData in ipairs(FadeBlizzardBars.ActionBarCollection) do
+    for _, barData in ipairs(self.ActionBarCollection) do
         local bar = _G[barData.frame]
         if bar then
             bar:SetAlpha(1)
@@ -34,16 +36,25 @@ FadeBlizzardBars.DisableAddon = function()
     end
 end
 
-FadeBlizzardBars.ApplyFade = function(_, optionKey)
-    FadeBlizzardBars.HandleFadeBars(optionKey)
+function FadeBlizzardBars:DisableAddon()
+    self.db.profile.enabled = false
+    self:RestoreBlizzardDefaults(false)
 end
 
-FadeBlizzardBars.ApplyClickThrough = function(_, optionKey)
-    FadeBlizzardBars.HandleClickThroughBars(optionKey)
+function FadeBlizzardBars:ApplyFade(optionKey)
+    if self.Utilities.AddonEnabled() then
+        self:HandleFadeBars(optionKey)
+    end
 end
 
-FadeBlizzardBars.EnableAddon = function()
-    FadeBlizzardBars.Utilities.SetAddonEnabled(true)
-    FadeBlizzardBars:ApplyClickThrough()
-    FadeBlizzardBars:ApplyFade()
+function FadeBlizzardBars:ApplyClickThrough(optionKey)
+    if self.Utilities.AddonEnabled() then
+        self:HandleClickThroughBars(optionKey)
+    end
+end
+
+function FadeBlizzardBars:EnableAddon()
+    self.Utilities.SetAddonEnabled(true)
+    self:ApplyClickThrough()
+    self:ApplyFade()
 end
