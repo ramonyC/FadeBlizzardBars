@@ -19,6 +19,15 @@ local function LockActionBarOnMount(barKey)
     return IsMounted() == true and FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "showOnMount") == true
 end
 
+local function LockMainActionBarOnVehicle()
+    local vehicleButton = _G[FadeBlizzardBars.ActionBarNames.VehicleLeaveButton]
+    if vehicleButton then
+        return vehicleButton:IsShown()
+    end
+
+    return false
+end
+
 local function UpdateVisibility(page, showOnPageChange, fadeInCallback, fadeOutCallback)
     if page ~= 1 and showOnPageChange then
         fadeInCallback()
@@ -83,7 +92,7 @@ local function RegisterOnMountHook()
     end)
 end
 
-local function RegisterMainAcionBarPageWatcher(barKey, fadeInCallback, fadeOutCallback)
+local function RegisterMainActionBarPageWatcher(barKey, fadeInCallback, fadeOutCallback)
     if FadeBlizzardBars.PageWatchers[barKey] ~= nil then
         return
     end
@@ -94,6 +103,26 @@ local function RegisterMainAcionBarPageWatcher(barKey, fadeInCallback, fadeOutCa
         UpdateVisibility(GetActionBarPage(), IsShowOnPageChangeEnabled(), fadeInCallback, fadeOutCallback)
     end)
     FadeBlizzardBars.PageWatchers[barKey] = pageWatcher
+end
+
+local function RegisterOnVehicleSecureHook()
+    if FadeBlizzardBars.IsHookRegistered("FadeOnVehicleHook") then
+        return
+    end
+
+    FadeBlizzardBars.RegisterHook("FadeOnVehicleHook")
+    hooksecurefunc(_G[FadeBlizzardBars.ActionBarNames.VehicleLeaveButton], "Show",
+    function()
+        local mainActionBar = _G[FadeBlizzardBars.ActionBarNames.MainActionBar]
+        if mainActionBar then
+            mainActionBar:SetAlpha(1)
+        end
+    end)
+
+    hooksecurefunc(_G[FadeBlizzardBars.ActionBarNames.VehicleLeaveButton], "Hide",
+    function()
+        FadeBlizzardBars:ApplyFade("mainActionBar")
+    end)
 end
 
 local function ShouldApplyFadeIn(key, bar)
@@ -114,7 +143,9 @@ local function ShouldApplyFadeOut(key, bar, isMainActionBar, alpha)
         or (isMainActionBar and GetActionBarPage() ~= 1 and IsShowOnPageChangeEnabled())
         or LockActionBarInCombat(key)
         or LockActionBarOnMount(key)
-        then return false
+        or (isMainActionBar and LockMainActionBarOnVehicle())
+    then
+        return false
     end
 
     if InCombatLockdown() == true then
@@ -140,6 +171,7 @@ function FadeBlizzardBars:HandleFadeBars(optionKey)
 
     RegisterCombatHook()
     RegisterOnMountHook()
+    RegisterOnVehicleSecureHook()
     for key, option in pairs(options) do
         local barData = self.Utilities.GetBarFromCollection(key)
         local bar = _G[barData.frame]
@@ -178,7 +210,7 @@ function FadeBlizzardBars:HandleFadeBars(optionKey)
 
             RegisterFadeHook(bar, key, barData.buttons, FadeIn, FadeOut)
             if isMainActionBar == true then
-                RegisterMainAcionBarPageWatcher(key, FadeIn, FadeOut)
+                RegisterMainActionBarPageWatcher(key, FadeIn, FadeOut)
             end
         elseif bar then
             bar:SetAlpha(1)

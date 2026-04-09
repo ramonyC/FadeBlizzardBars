@@ -32,6 +32,7 @@ FadeBlizzardBars.ActionBarNames = {
     StanceBar = "StanceBar",
     BagsBar = "BagsBar",
     MicroMenuContainer = "MicroMenuContainer",
+    VehicleLeaveButton = "MainMenuBarVehicleLeaveButton",
 }
 
 local function GetActionBarButtonNameCollection(buttonPrefix)
