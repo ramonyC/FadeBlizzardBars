@@ -106,9 +106,11 @@ function FadeBlizzardBars:ApplyShowOnMount()
 end
 
 function FadeBlizzardBars:EnableAddon()
-    self.Utilities.SetAddonEnabled(true)
-    self:ApplyClickThrough()
-    self:ApplyFade()
-    self:ApplyScale()
-    self:ApplyHideHotKeys()
+    C_Timer.After(0, function()
+        self.Utilities.SetAddonEnabled(true)
+        self:ApplyClickThrough()
+        self:ApplyFade()
+        self:ApplyScale()
+        self:ApplyHideHotKeys()
+    end)
 end
