@@ -87,22 +87,24 @@ function FadeBlizzardBars:ApplyShowOnMount()
         return
     end
 
-    if IsMounted() == true then
-        for _, barData in ipairs(self.ActionBarCollection) do
-            if self.Utilities.GetDBBarOption(barData.key, "showOnMount") == true then
-                local bar = _G[barData.frame]
-                if bar then
-                    bar:SetAlpha(1)
+    C_Timer.After(0, function()
+        if IsMounted() == true then
+            for _, barData in ipairs(self.ActionBarCollection) do
+                if self.Utilities.GetDBBarOption(barData.key, "showOnMount") == true then
+                    local bar = _G[barData.frame]
+                    if bar then
+                        bar:SetAlpha(1)
+                    end
+                end
+            end
+        else
+            for _, barData in ipairs(self.ActionBarCollection) do
+                if self.Utilities.GetDBBarOption(barData.key, "showOnMount") == true then
+                    self:ApplyFade(barData.key)
                 end
             end
         end
-    else
-        for _, barData in ipairs(self.ActionBarCollection) do
-            if self.Utilities.GetDBBarOption(barData.key, "showOnMount") == true then
-                self:ApplyFade(barData.key)
-            end
-        end
-    end
+    end)
 end
 
 function FadeBlizzardBars:EnableAddon()
