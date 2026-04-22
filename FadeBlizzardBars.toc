@@ -1,4 +1,4 @@
-## Interface: 120001
+## Interface: 120001, 120005
 
 ## Title: FadeBlizzardBars
 ## Notes: Simple addon to fade standart Blizzard action bars
