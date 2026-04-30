@@ -26,5 +26,6 @@ globals = {
     "InCombatLockdown",
     "RANGE_INDICATOR",
     "Settings",
-    "hooksecurefunc"
+    "hooksecurefunc",
+    "SpellFlyout"
 }
