@@ -31,6 +31,30 @@ local function LockActionBarOnMount(barKey)
     return IsMounted() == true and FadeBlizzardBars.Utilities.GetDBBarOption(barKey, "showOnMount") == true
 end
 
+local function SpellFlyoutOnHideHook()
+    if FadeBlizzardBars.IsHookRegistered("SpellFlyoutOnHideHook") then
+        return
+    end
+
+    FadeBlizzardBars.RegisterHook("SpellFlyoutOnHideHook")
+    SpellFlyout:HookScript("OnHide", function()
+        FadeBlizzardBars:ApplyFade()
+    end)
+end
+
+local function LockSpellFlyoutIsShown(barKey)
+    if (SpellFlyout:IsShown() == true) then
+        local parentButtonName = SpellFlyout:GetParent():GetName()
+        if parentButtonName and string.find(parentButtonName:lower(), barKey:lower()) then
+            SpellFlyoutOnHideHook()
+
+            return true
+        end
+     end
+
+     return false
+end
+
 local function LockMainActionBarOnVehicle()
     local vehicleButton = _G[FadeBlizzardBars.ActionBarNames.VehicleLeaveButton]
     if vehicleButton then
@@ -152,6 +176,7 @@ local function ShouldApplyFadeOut(key, bar, isMainActionBar, alpha)
         or (isMainActionBar and LockMainActionBarOnVehicle())
         or LockActionBarInCombat(key)
         or LockActionBarOnMount(key)
+        or LockSpellFlyoutIsShown(key)
     then
         return false
     end
