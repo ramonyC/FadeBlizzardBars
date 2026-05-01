@@ -16,7 +16,8 @@ local BugsButtonNames =  {
 local MicroMenuButtonNames = {
     "CharacterMicroButton", "SpellbookMicroButton", "TalentMicroButton", "AchievementMicroButton",
     "QuestLogMicroButton", "GuildMicroButton", "ProfessionMicroButton", "PlayerSpellsMicroButton", "HousingMicroButton",
-    "LFDMicroButton", "CollectionsMicroButton", "EJMicroButton", "StoreMicroButton", "MainMenuMicroButton"
+    "LFDMicroButton", "CollectionsMicroButton", "EJMicroButton", "StoreMicroButton", "MainMenuMicroButton",
+    "QueueStatusButton"
 }
 
 FadeBlizzardBars.ActionBarNames = {
