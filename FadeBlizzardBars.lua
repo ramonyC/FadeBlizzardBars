@@ -107,10 +107,16 @@ SlashCmdList["FBB"] = function(msg)
         return
     end
 
-    if msg == "off" then
+    if type(msg) ~= "string" then
+        return
+    end
+
+    local normalizedMsg = msg:lower()
+
+    if normalizedMsg == "off" then
         FadeBlizzardBars:DisableAddon()
         print("|cff00ff00FadeBlizzardBars:|r Disabled")
-    elseif msg == "on" then
+    elseif normalizedMsg == "on" then
         FadeBlizzardBars:EnableAddon()
         print("|cff00ff00FadeBlizzardBars:|r Enabled")
     else
