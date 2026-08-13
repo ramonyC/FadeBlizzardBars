@@ -1,7 +1,7 @@
-## Interface: 120007, 120005, 120001
+## Interface: 120100
 
 ## Title: FadeBlizzardBars
-## Notes: Simple addon to fade standart Blizzard action bars
+## Notes: Simple and lightweight addon to add more customization for default Blizzard action bars
 ## IconTexture: Interface\Icons\INV_Misc_Gem_01
 
 ## Author: Ramony
