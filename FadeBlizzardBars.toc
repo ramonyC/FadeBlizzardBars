@@ -1,11 +1,12 @@
-## Interface: 120100
+## Interface: 120105
+## Version 0.7.0
 
 ## Title: FadeBlizzardBars
 ## Notes: Simple and lightweight addon to add more customization for default Blizzard action bars
 ## IconTexture: Interface\Icons\INV_Misc_Gem_01
 
 ## Author: Ramony
-## X-Email: chernush.vitaly at gmail dot CollectionsMicroButton
+## X-Email: chernush.vitaly at gmail dot com
 
 ## X-Curse-Project-ID: 1505285
 ## X-Category: Action bars
